@@ -20,6 +20,7 @@ class ContentWriteActivity : AppCompatActivity() {
     private val database = FirebaseDatabase.getInstance().reference.child("content")
     private val currentUser = FirebaseAuth.getInstance().currentUser
     private val storageRef = FirebaseStorage.getInstance().reference.child("images")
+    private var selectedImageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,24 +32,17 @@ class ContentWriteActivity : AppCompatActivity() {
         }
 
         binding.writeBtn.setOnClickListener {
-
             val title = binding.titleArea.text.toString()
             val content = binding.contentArea.text.toString()
-            val time = getTime()
-            val key = database.push().key ?: ""
-            if (key.isNotEmpty()) {
-                val userId = currentUser?.uid ?: ""
-                val contentModel = ContentModel(title, content, time, key, userId)
-                database.child(key).setValue(contentModel)
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "게시글 입력 완료", Toast.LENGTH_SHORT).show()
-                        finish()
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(this, "게시글 입력 실패", Toast.LENGTH_SHORT).show()
-                    }
+
+            if (title.isNotEmpty() && content.isNotEmpty()) {
+                if (selectedImageUri != null) {
+                    uploadImageAndContent(title, content)
+                } else {
+                    saveContent(title, content, null)
+                }
             } else {
-                Toast.makeText(this, "게시글 입력 실패", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "제목과 내용을 입력해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -63,46 +57,48 @@ class ContentWriteActivity : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
             data?.let {
-                val imageUri: Uri = it.data!!
-                // 이미지 URI를 Toast로 보여줍니다.
-                Toast.makeText(this, "이미지 URI: $imageUri", Toast.LENGTH_SHORT).show()
-
+                selectedImageUri = it.data
                 // 이미지뷰에 선택한 이미지를 설정합니다.
-                binding.imageView.setImageURI(imageUri)
-
-                val imageName = UUID.randomUUID().toString()
-                val imageRef = storageRef.child(imageName)
-                imageRef.putFile(imageUri)
-                    .addOnSuccessListener { taskSnapshot ->
-                        imageRef.downloadUrl.addOnSuccessListener { uri ->
-                            val imageUrl = uri.toString()
-                            val title = binding.titleArea.text.toString()
-                            val content = binding.contentArea.text.toString()
-                            val time = getTime()
-                            val key = database.push().key ?: ""
-                            if (key.isNotEmpty()) {
-                                val userId = currentUser?.uid ?: ""
-                                val contentModel = ContentModel(title, content, time, key, userId, imageUrl)
-                                database.child(key).setValue(contentModel)
-                                    .addOnSuccessListener {
-                                        Toast.makeText(this, "게시글 입력 완료", Toast.LENGTH_SHORT).show()
-                                        finish()
-                                    }
-                                    .addOnFailureListener {
-                                        Toast.makeText(this, "게시글 입력 실패", Toast.LENGTH_SHORT).show()
-                                    }
-                            } else {
-                                Toast.makeText(this, "게시글 입력 실패", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    }
-                    .addOnFailureListener { exception ->
-                        Toast.makeText(this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show()
-                    }
+                binding.imageView.setImageURI(selectedImageUri)
             }
         }
     }
 
+    private fun uploadImageAndContent(title: String, content: String) {
+        selectedImageUri?.let { imageUri ->
+            val imageName = UUID.randomUUID().toString()
+            val imageRef = storageRef.child(imageName)
+            imageRef.putFile(imageUri)
+                .addOnSuccessListener { taskSnapshot ->
+                    imageRef.downloadUrl.addOnSuccessListener { uri ->
+                        val imageUrl = uri.toString()
+                        saveContent(title, content, imageUrl)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
+    private fun saveContent(title: String, content: String, imageUrl: String?) {
+        val time = getTime()
+        val key = database.push().key ?: ""
+        if (key.isNotEmpty()) {
+            val userId = currentUser?.uid ?: ""
+            val contentModel = imageUrl?.let { ContentModel(title, content, time, key, userId, it) }
+            database.child(key).setValue(contentModel)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "게시글 입력 완료", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "게시글 입력 실패", Toast.LENGTH_SHORT).show()
+                }
+        } else {
+            Toast.makeText(this, "게시글 입력 실패", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     private fun getTime(): String {
         val currentDateTime = Calendar.getInstance().time

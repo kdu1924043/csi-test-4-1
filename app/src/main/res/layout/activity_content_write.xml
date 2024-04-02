@@ -46,7 +46,7 @@
         <TextView
             android:id="@+id/imagePathTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
             android:text="선택된 이미지:"

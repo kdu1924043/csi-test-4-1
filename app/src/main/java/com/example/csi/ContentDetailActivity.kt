@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.csi.databinding.ActivityContentDetailBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.squareup.picasso.Picasso
 
 class ContentDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityContentDetailBinding
@@ -25,6 +26,14 @@ class ContentDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         contentModel = intent.getParcelableExtra("contentModel") ?: return
+        val imageUrl = contentModel.imageUrl
+        if (imageUrl.isNotEmpty()) {
+            Picasso.get().load(imageUrl).into(binding.imageView)
+        } else {
+            // 이미지가 없는 상태로 유지합니다.
+            binding.imageView.setImageDrawable(null)
+        }
+
 
         // ContentModel에 저장된 좋아요 수를 TextView에 설정
         binding.likesCount.text = contentModel.likes.toString()

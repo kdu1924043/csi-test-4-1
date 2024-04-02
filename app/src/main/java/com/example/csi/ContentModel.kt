@@ -1,4 +1,3 @@
-
 import android.os.Parcel
 import android.os.Parcelable
 
@@ -8,6 +7,7 @@ data class ContentModel(
     val time: String = "",
     val id: String = "",
     val userId: String = "", // 사용자 아이디 추가
+    val imageUrl: String = "",
     var likes: Int = 0
 ) : Parcelable {
 
@@ -17,6 +17,7 @@ data class ContentModel(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "", // 사용자 아이디 추가
+        parcel.readString() ?: "",
         parcel.readInt()
     )
 
@@ -25,7 +26,8 @@ data class ContentModel(
         parcel.writeString(content)
         parcel.writeString(time)
         parcel.writeString(id)
-        parcel.writeString(userId) // 사용자 아이디 추가
+        parcel.writeString(userId)
+        parcel.writeString(imageUrl)// 사용자 아이디 추가
         parcel.writeInt(likes)
     }
 

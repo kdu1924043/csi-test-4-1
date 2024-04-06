@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction
 class MainActivity : AppCompatActivity() {
     private val Fragment_1 = 1
     private val Fragment_2 = 2
+    private val Fragment_6 = 6
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +20,10 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.btn2).setOnClickListener {
             fragmentView(Fragment_2)
+        }
+
+        findViewById<View>(R.id.btn3).setOnClickListener {
+            fragmentView(Fragment_6)
         }
 
         fragmentView(Fragment_1)
@@ -35,6 +40,10 @@ class MainActivity : AppCompatActivity() {
             2 -> {
                 val fragment2 = Fragment2()
                 transaction.replace(R.id.fragment_container, fragment2)
+            }
+            6 -> {
+                val fragment6 = Fragment6()
+                transaction.replace(R.id.fragment_container, fragment6)
             }
         }
         transaction.commit()

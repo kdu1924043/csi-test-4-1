@@ -32,6 +32,9 @@
             android:name=".ContentListFragment"
             android:exported="false" />
         <activity
+            android:name=".SetFragment"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity

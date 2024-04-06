@@ -1,8 +1,10 @@
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.csi.R
 
 class ContentAdapter(
@@ -28,6 +30,7 @@ class ContentAdapter(
         private val contentTextView: TextView = itemView.findViewById(R.id.contentArea)
         private val timeTextView: TextView = itemView.findViewById(R.id.timeArea)
         private val likeTextView: TextView = itemView.findViewById(R.id.likesCount)
+        private val imageView: ImageView = itemView.findViewById(R.id.imageView)
 
         init {
             itemView.setOnClickListener {
@@ -44,6 +47,10 @@ class ContentAdapter(
             timeTextView.text = contentModel.time
             likeTextView.text = contentModel.likes.toString()
 
+            // Glide를 사용하여 이미지 로드
+            Glide.with(itemView)
+                .load(contentModel.imageUrl) // 파이어베이스에서 가져온 이미지 URL
+                .into(imageView)
         }
     }
 }

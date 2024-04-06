@@ -131,9 +131,9 @@ class ContentDetailActivity : AppCompatActivity() {
     }
     private fun updateLikeButtonState() {
         if (userLiked) {
-            binding.likeButton.text = "Unlike"
+            binding.likeButton.text = "♥"
         } else {
-            binding.likeButton.text = "Like"
+            binding.likeButton.text = "♡"
         }
     }
 

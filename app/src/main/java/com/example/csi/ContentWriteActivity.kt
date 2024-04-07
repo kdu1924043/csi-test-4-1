@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import ContentModel
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.result.contract.ActivityResultContracts
@@ -34,12 +35,12 @@ class ContentWriteActivity : AppCompatActivity() {
         binding.writeBtn.setOnClickListener {
             val title = binding.titleArea.text.toString()
             val content = binding.contentArea.text.toString()
-
+            val imageUrl =binding.contentArea.text.toString()
             if (title.isNotEmpty() && content.isNotEmpty()) {
                 if (selectedImageUri != null) {
                     uploadImageAndContent(title, content)
                 } else {
-                    saveContent(title, content, null)
+                    saveContent(title, content, imageUrl)
                 }
             } else {
                 Toast.makeText(this, "제목과 내용을 입력해주세요.", Toast.LENGTH_SHORT).show()
@@ -87,6 +88,7 @@ class ContentWriteActivity : AppCompatActivity() {
         if (key.isNotEmpty()) {
             val userId = currentUser?.uid ?: ""
             val contentModel = imageUrl?.let { ContentModel(title, content, time, key, userId, it) }
+            Log.d("SaveContent", "ImageUrl: $imageUrl") // 추가된 로그
             database.child(key).setValue(contentModel)
                 .addOnSuccessListener {
                     Toast.makeText(this, "게시글 입력 완료", Toast.LENGTH_SHORT).show()

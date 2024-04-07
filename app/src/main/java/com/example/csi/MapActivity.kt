@@ -19,14 +19,14 @@ import com.example.csi.databinding.ActivityMapBinding
 import com.google.android.gms.location.*
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
+import net.daum.mf.map.api.MapView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import android.Manifest
 
-class MapActivity : AppCompatActivity() {
+class MapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener {
     companion object {
         const val BASE_URL = "https://dapi.kakao.com/"
         const val API_KEY = "KakaoAK a70645bcfd024ce9073200946d6966ad" // REST API 키
@@ -47,42 +47,52 @@ class MapActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        // 위치 설정 확인
+        checkLocationSettings()
+
         // 퓨즈드 위치 클라이언트 초기화
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         // 위치 권한 확인 및 요청
-        if (ActivityCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) !=
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) !=
             PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION) !=
-            PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
             // 권한이 부여되지 않았다면 요청
-            ActivityCompat.requestPermissions(this,
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_REQUEST_CODE)
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_REQUEST_CODE
+            )
         } else {
             // 권한이 부여되었으면 위치 업데이트 시작
             startLocationUpdates()
         }
 
         // 리사이클러 뷰
-        binding.rvList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.rvList.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvList.adapter = listAdapter
 
         // 리스트 아이템 클릭 시 해당 위치로 이동
         listAdapter.setItemClickListener(object : ListAdapter.OnItemClickListener {
             override fun onClick(v: View, position: Int) {
-                val mapPoint =
-                    MapPoint.mapPointWithGeoCoord(listItems[position].y, listItems[position].x)
-                binding.mapView.setMapCenterPointAndZoomLevel(mapPoint, 1, true)
+                val selectedItem = listItems[position]
+                moveMapToLocation(selectedItem.y, selectedItem.x)
             }
         })
 
-        // 검색 버튼
+        // 검색 버튼 클릭 시 이벤트 처리
         binding.btnSearch.setOnClickListener {
             keyword = binding.etSearchField.text.toString()
             pageNumber = 1
-            searchKeyword(keyword, pageNumber)
+            searchAndMoveToFirstResult(keyword, pageNumber) // 검색 및 결과 이동 함수 호출
         }
 
         // 이전 페이지 버튼
@@ -98,6 +108,39 @@ class MapActivity : AppCompatActivity() {
             binding.tvPageNumber.text = pageNumber.toString()
             searchKeyword(keyword, pageNumber)
         }
+
+        // 초기 지도 위치 설정
+        val initialLatitude = 37.810694
+        val initialLongitude = 127.070980
+        val initialMapPoint = MapPoint.mapPointWithGeoCoord(initialLatitude, initialLongitude)
+        binding.mapView.setMapCenterPoint(initialMapPoint, true)
+
+        // 자동으로 현재 위치 주변의 CU 편의점을 표시
+        displayCUNearby()
+    }
+
+    private fun searchAndMoveToFirstResult(keyword: String, pageNumber: Int) {
+        // 키워드 검색 함수 호출
+        searchKeyword(keyword, pageNumber)
+    }
+
+    private fun checkLocationSettings() {
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            // GPS가 꺼져 있음
+            AlertDialog.Builder(this)
+                .setTitle("위치 설정")
+                .setMessage("위치 서비스가 꺼져 있습니다. 위치 설정을 켜시겠습니까?")
+                .setPositiveButton("예") { _, _ ->
+                    // 사용자가 예를 선택한 경우 위치 설정 화면으로 이동
+                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                }
+                .setNegativeButton("아니오") { dialog, _ ->
+                    // 사용자가 아니오를 선택한 경우 다이얼로그 닫기
+                    dialog.dismiss()
+                }
+                .show()
+        }
     }
 
     private fun startLocationUpdates() {
@@ -110,11 +153,11 @@ class MapActivity : AppCompatActivity() {
             override fun onLocationResult(p0: LocationResult) {
                 p0.lastLocation?.let { location ->
                     // 위치 업데이트 처리
-                    // 이 위치를 사용하여 지도 업데이트 또는 다른 작업을 수행할 수 있습니다
+                    val mapPoint = MapPoint.mapPointWithGeoCoord(location.latitude, location.longitude)
+                    binding.mapView.setMapCenterPoint(mapPoint, true) // 현재 위치를 지도의 중심으로 설정
                 }
             }
         }
-
 
         // 위치 업데이트 요청 전에 위치 권한이 있는지 확인
         if (ActivityCompat.checkSelfPermission(this,
@@ -125,24 +168,31 @@ class MapActivity : AppCompatActivity() {
                 locationCallback,
                 Looper.getMainLooper()) // Looper 지정
         }
-
     }
 
-
-    // 키워드 검색 함수
     private fun searchKeyword(keyword: String, page: Int) {
+        // 기본적으로는 입력된 키워드를 사용하고, "cu" 키워드를 추가하여 검색 쿼리를 생성
+        val searchQuery = "$keyword cu"
+
         val retrofit = Retrofit.Builder() // Retrofit 구성
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val api = retrofit.create(KakaoAPI::class.java) // 통신 인터페이스를 객체로 생성
-        val call = api.getSearchKeyword(API_KEY, keyword, page) // 검색 조건 입력
+        val call = api.getSearchKeyword(API_KEY, searchQuery, page) // 검색 조건 입력
 
         // API 서버에 요청
         call.enqueue(object : Callback<ResultSearchKeyword> {
             override fun onResponse(call: Call<ResultSearchKeyword>, response: Response<ResultSearchKeyword>) {
                 // 통신 성공
                 addItemsAndMarkers(response.body())
+                // 검색 결과가 있으면 첫 번째 결과 항목의 위치로 지도 이동
+                if (!response.body()?.documents.isNullOrEmpty()) {
+                    val firstItem = response.body()?.documents?.first()
+                    firstItem?.let {
+                        moveMapToLocation(it.y.toDouble(), it.x.toDouble())
+                    }
+                }
             }
 
             override fun onFailure(call: Call<ResultSearchKeyword>, t: Throwable) {
@@ -152,7 +202,6 @@ class MapActivity : AppCompatActivity() {
         })
     }
 
-    // 검색 결과 처리 함수
     private fun addItemsAndMarkers(searchResult: ResultSearchKeyword?) {
         if (!searchResult?.documents.isNullOrEmpty()) {
             // 검색 결과 있음
@@ -182,21 +231,51 @@ class MapActivity : AppCompatActivity() {
             binding.btnNextPage.isEnabled = !searchResult.meta.is_end // 페이지가 더 있을 경우 다음 버튼 활성화
             binding.btnPrevPage.isEnabled = pageNumber != 1 // 1페이지가 아닐 경우 이전 버튼 활성화
 
+            // 첫 번째 결과 항목으로 지도 이동
+            if (listItems.isNotEmpty()) {
+                val firstItem = listItems.first()
+                moveMapToLocation(firstItem.y, firstItem.x)
+            }
+
         } else {
             // 검색 결과 없음
             Toast.makeText(this, "검색 결과가 없습니다", Toast.LENGTH_SHORT).show()
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // 위치 권한이 부여됨
-                startLocationUpdates()
-            } else {
-                // 위치 권한이 거부됨
-                Toast.makeText(this, "위치 권한이 필요합니다", Toast.LENGTH_SHORT).show()
+    override fun onCurrentLocationUpdate(mapView: MapView, mapPoint: MapPoint, v: Float) {
+        // 현재 위치 업데이트 처리
+    }
+
+    override fun onCurrentLocationDeviceHeadingUpdate(mapView: MapView, v: Float) {
+        // 현재 위치 디바이스 방향 업데이트 처리
+    }
+
+    override fun onCurrentLocationUpdateFailed(mapView: MapView) {
+        // 현재 위치 업데이트 실패 처리
+    }
+
+    override fun onCurrentLocationUpdateCancelled(mapView: MapView) {
+        // 현재 위치 업데이트 취소 처리
+    }
+
+    private fun moveMapToLocation(latitude: Double, longitude: Double) {
+        // 클릭한 항목의 위치로 지도 이동
+        val mapPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude)
+        binding.mapView.setMapCenterPointAndZoomLevel(mapPoint, 1, true)
+    }
+
+    private fun displayCUNearby() {
+        // 현재 위치를 기반으로 CU 편의점 검색
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            val lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+            lastKnownLocation?.let { location ->
+                val latitude = location.latitude
+                val longitude = location.longitude
+                // CU 편의점 주변 검색
+                searchKeyword("양주 경동대 CU", 1)
             }
         }
     }

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.csiimport.MapFragment
+import com.example.csi.MapFragment
 
 class Fragment1 : Fragment() {
 

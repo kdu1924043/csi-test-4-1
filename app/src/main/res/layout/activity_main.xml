@@ -15,20 +15,20 @@
 
         <Button
             android:id="@+id/btn1"
-            android:text="프래그먼트 1"
+            android:text=" 지도 "
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <Button
             android:id="@+id/btn2"
-            android:text="프래그먼트 2"
+            android:text=" 커뮤니티 "
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
         <Button
             android:id="@+id/btn3"
-            android:text="프래그먼트 3"
+            android:text=" 설정 "
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />

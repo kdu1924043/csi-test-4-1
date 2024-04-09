@@ -11,9 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="400dp"
         android:layout_marginEnd="20dp"
-        android:hint="Email">
+        app:boxStrokeColor="@color/black"
+        android:hint="이메일">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"
@@ -28,9 +29,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/emailLayout"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
-        android:hint="Password">
+        app:boxStrokeColor="@color/black"
+        android:hint="비밀번호">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/pwd"
@@ -42,11 +44,17 @@
 
     <Button
         android:id="@+id/joinBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/passwordLayout"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="Join"/>
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="@font/tae"
+        android:textSize="17dp"
+        android:text="회원가입"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/rightgreen"/>
 
 </RelativeLayout>

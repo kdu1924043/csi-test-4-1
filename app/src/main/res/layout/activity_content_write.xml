@@ -36,11 +36,12 @@
             android:gravity="top"
             android:hint="내용을 자유롭게 입력해 보세요."
             android:textSize="14sp" />
-        <Button
-            android:id="@+id/chooseImageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/imageSelectButton"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:layout_marginStart="20dp"
+            android:background="@drawable/cameraback"
             android:text="이미지 선택"
             android:textSize="16sp" />
         <TextView
@@ -66,9 +67,10 @@
             android:layout_height="50dp"
             android:layout_margin="20dp"
             android:background="@color/black"
-            android:text="작성하기"
+            android:text="업로드"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            />
 
     </LinearLayout>
 </layout>

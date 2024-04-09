@@ -70,11 +70,11 @@ class ContentDetailActivity : AppCompatActivity() {
         })
 
 
-        binding.likeButton.setOnClickListener {
+        binding.imagelikeButton.setOnClickListener {
             toggleLike()
         }
 
-        binding.deleteButton.setOnClickListener {
+        binding.imagedeleteButton.setOnClickListener {
             deleteContent(contentModel)
         }
     }
@@ -131,9 +131,9 @@ class ContentDetailActivity : AppCompatActivity() {
     }
     private fun updateLikeButtonState() {
         if (userLiked) {
-            binding.likeButton.text = "♥"
+            binding.imagelikeButton.setBackgroundResource(R.drawable.unlikeback) // 좋아요를 이미 눌렀을 때
         } else {
-            binding.likeButton.text = "♡"
+            binding.imagelikeButton.setBackgroundResource(R.drawable.likeback) // 좋아요를 아직 누르지 않았을 때
         }
     }
 

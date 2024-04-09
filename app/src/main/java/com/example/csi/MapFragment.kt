@@ -64,7 +64,7 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener {
         })
 
         // 검색 버튼
-        binding.btnSearch.setOnClickListener {
+        binding.imagebtnSearch.setOnClickListener {
             keyword = binding.etSearchField.text.toString()
             pageNumber = 1
             searchKeyword(keyword, pageNumber)

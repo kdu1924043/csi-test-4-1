@@ -39,18 +39,18 @@
             android:hint="장소 입력"
             android:inputType="textPersonName"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_search"
-            app:layout_constraintEnd_toStartOf="@+id/btn_search"
+            app:layout_constraintBottom_toBottomOf="@+id/imagebtnSearch"
+            app:layout_constraintEnd_toStartOf="@+id/imagebtnSearch"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btn_search" />
+            app:layout_constraintTop_toTopOf="@+id/imagebtnSearch" />
 
-        <Button
-            android:id="@+id/btn_search"
+        <ImageView
+            android:id="@+id/imagebtnSearch"
             style="@style/Widget.AppCompat.Button.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginEnd="8dp"
-            android:text="검색"
+            android:background="@drawable/searchback"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,7 +62,7 @@
             app:layout_constraintBottom_toTopOf="@+id/btn_nextPage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_search" />
+            app:layout_constraintTop_toBottomOf="@+id/imagebtnSearch" />
 
         <Button
             android:id="@+id/btn_prevPage"
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:enabled="false"
-            android:text="이전"
+            android:text="◀"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:enabled="false"
-            android:text="다음"
+            android:text="▶"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

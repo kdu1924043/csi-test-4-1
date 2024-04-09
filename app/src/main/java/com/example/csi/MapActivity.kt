@@ -89,7 +89,7 @@ class MapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener {
         })
 
         // 검색 버튼 클릭 시 이벤트 처리
-        binding.btnSearch.setOnClickListener {
+        binding.imagebtnSearch.setOnClickListener {
             keyword = binding.etSearchField.text.toString()
             pageNumber = 1
             searchAndMoveToFirstResult(keyword, pageNumber) // 검색 및 결과 이동 함수 호출

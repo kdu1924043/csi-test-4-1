@@ -28,7 +28,7 @@ class ContentWriteActivity : AppCompatActivity() {
         binding = ActivityContentWriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.chooseImageButton.setOnClickListener {
+        binding.imageSelectButton.setOnClickListener {
             openGalleryForImage()
         }
 

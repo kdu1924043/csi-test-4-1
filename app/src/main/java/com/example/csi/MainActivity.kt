@@ -1,13 +1,14 @@
 package com.example.csi
 
+import Fragment3
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentTransaction
 
 class MainActivity : AppCompatActivity() {
     private val Fragment_1 = 1
     private val Fragment_2 = 2
+    private val Fragment_3 = 3
     private val Fragment_6 = 6
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +21,9 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.btn2).setOnClickListener {
             fragmentView(Fragment_2)
+        }
+        findViewById<View>(R.id.btn4).setOnClickListener {
+            fragmentView(Fragment_3)
         }
 
         findViewById<View>(R.id.btn3).setOnClickListener {
@@ -40,6 +44,10 @@ class MainActivity : AppCompatActivity() {
             2 -> {
                 val fragment2 = Fragment2()
                 transaction.replace(R.id.fragment_container, fragment2)
+            }
+            3 -> {
+                val fragment3 = Fragment3()
+                transaction.replace(R.id.fragment_container, fragment3)
             }
             6 -> {
                 val fragment6 = Fragment6()

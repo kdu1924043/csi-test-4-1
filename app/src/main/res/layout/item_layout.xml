@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- 검색 기능을 위한 EditText -->
+    
+
+    <!-- 아이템 사진을 표시할 ImageView -->
+    <ImageView
+        android:id="@+id/photoImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/common_full_open_on_phone" />
+
+    <!-- 아이템 번호를 표시할 TextView -->
+    <TextView
+        android:id="@+id/noTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No: "
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <!-- 아이템 이름을 표시할 TextView -->
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name: "
+        android:textSize="16sp" />
+
+    <!-- 아이템 가격을 표시할 TextView -->
+    <TextView
+        android:id="@+id/priceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price: "
+        android:textSize="16sp" />
+
+
+
+</LinearLayout>

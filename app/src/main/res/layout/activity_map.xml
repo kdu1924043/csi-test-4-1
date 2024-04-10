@@ -37,6 +37,7 @@
             android:layout_marginEnd="8dp"
             android:ems="10"
             android:hint="장소 입력"
+            android:fontFamily="@font/bold"
             android:inputType="textPersonName"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/imagebtnSearch"

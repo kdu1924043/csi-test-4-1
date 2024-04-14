@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/signback"
     tools:context=".JoinActivity">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -11,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="441dp"
         android:layout_marginEnd="20dp"
         app:boxStrokeColor="@color/black"
         android:hint="이메일">
@@ -19,7 +20,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="55dp"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -29,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/emailLayout"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="20dp"
         app:boxStrokeColor="@color/black"
 
@@ -38,7 +39,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/pwd"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
 
             android:inputType="textPassword"/>
 
@@ -51,7 +52,7 @@
         android:layout_below="@id/passwordLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="20dp"
         android:fontFamily="@font/bold"
         android:textSize="20dp"

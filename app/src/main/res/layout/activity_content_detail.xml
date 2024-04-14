@@ -13,7 +13,7 @@
 
             <TextView
                 android:id="@+id/textViewTitle"
-                android:layout_width="300dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="Title"
                 android:fontFamily="@font/bold"
@@ -26,6 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_marginLeft="5dp"
                 android:text="Content"
                 android:fontFamily="@font/bold"
                 android:textSize="20dp"
@@ -38,7 +39,7 @@
                 android:id="@+id/likesCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="250dp"
+                android:layout_marginStart="200dp"
                 android:layout_marginTop="-25dp"
                 android:text="0"
                 android:textSize="16sp"
@@ -49,7 +50,7 @@
                 android:id="@+id/imagelikeButton"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_marginStart="-55dp"
+                android:layout_marginStart="-105dp"
                 android:layout_marginTop="-30dp"
                 android:background="@drawable/likeback"
                 app:layout_constraintStart_toEndOf="parent"
@@ -69,11 +70,11 @@
                 android:id="@+id/imagedeleteButton"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginTop="-45dp"
+                android:layout_marginEnd="15dp"
                 android:background="@drawable/deleteback"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imagelikeButton"
-                tools:layout_editor_absoluteY="385dp" />
+                app:layout_constraintTop_toBottomOf="@id/imagelikeButton" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

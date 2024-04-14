@@ -24,12 +24,32 @@ class SetFragment : Fragment(R.layout.fragment6) {
         requireActivity().finish() // 현재 액티비티 종료
     }
 
+    // 사용자 회원 탈퇴 메서드
+    private fun deleteAccount() {
+        // 사용자 삭제
+        firebaseAuth.currentUser?.delete()
+            ?.addOnCompleteListener(requireActivity()) { task ->
+                if (task.isSuccessful) {
+                    // 회원 탈퇴 성공 시 로그아웃
+                    signOut()
+                } else {
+                    // 회원 탈퇴 실패 시 메시지 표시
+                    // TODO: 실패 시 처리할 내용 추가
+                }
+            }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // 로그아웃 버튼 클릭 시 로그아웃 메서드 호출
         view.findViewById<Button>(R.id.logout_button).setOnClickListener {
             signOut()
+        }
+
+        // 회원 탈퇴 버튼 클릭 시 회원 탈퇴 메서드 호출
+        view.findViewById<Button>(R.id.delete_account_button).setOnClickListener {
+            deleteAccount()
         }
     }
 }

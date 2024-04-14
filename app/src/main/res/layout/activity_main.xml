@@ -6,59 +6,63 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <Button
             android:id="@+id/btn1"
-            android:text=" 지도 "
-            android:fontFamily="@font/bold"
-            android:textColor="@color/black"
-            android:backgroundTint="@color/rightgreen"
+            style="@android:style/Widget.Holo.Button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="47dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/bold"
+            android:text=" 지도 "
+            android:textColor="@color/black"
+            android:textSize="17dp" />
 
         <Button
             android:id="@+id/btn2"
             android:text=" 커뮤 "
+            style="@android:style/Widget.Holo.Button"
             android:fontFamily="@font/bold"
             android:textColor="@color/black"
             android:backgroundTint="@color/rightgreen"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="47dp"
+            android:layout_weight="1"
+            android:textSize="17dp"/>
 
         <Button
             android:id="@+id/btn4"
             android:text=" 검색 "
+            style="@android:style/Widget.Holo.Button"
             android:fontFamily="@font/bold"
             android:textColor="@color/black"
             android:backgroundTint="@color/rightgreen"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="47dp"
+            android:layout_weight="1"
+            android:textSize="17dp"/>
         <Button
             android:id="@+id/btn3"
             android:text=" 설정 "
+            style="@android:style/Widget.Holo.Button"
             android:fontFamily="@font/bold"
             android:textColor="@color/black"
             android:backgroundTint="@color/rightgreen"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="47dp"
+            android:layout_weight="1"
+            android:textSize="17dp"/>
 
     </LinearLayout>
-
-
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
 
 </LinearLayout>

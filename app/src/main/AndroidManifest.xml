@@ -44,6 +44,24 @@
             android:name=".SearchActivity"
             android:exported="false" />
         <activity
+            android:name=".SearchActivity1"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity2"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity3"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity4"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity5"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity6"
+            android:exported="false" />
+        <activity
             android:name=".JoinActivity"
             android:exported="true" />
         <activity

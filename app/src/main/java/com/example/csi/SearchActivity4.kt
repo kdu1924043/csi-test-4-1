@@ -1,4 +1,5 @@
 package com.example.csi
+
 import Item
 import ItemAdapter
 import android.os.Bundle
@@ -14,7 +15,7 @@ import org.json.JSONObject
 import java.io.IOException
 import java.nio.charset.Charset
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity4 : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ItemAdapter
@@ -30,7 +31,7 @@ class SearchActivity : AppCompatActivity() {
         searchEditText = findViewById(R.id.searchEditText)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val json: String = loadJSONFromAsset("data.json") ?: ""
+        val json: String = loadJSONFromAsset("ice.json") ?: ""
 
         val jsonArray = JSONArray(json)
 

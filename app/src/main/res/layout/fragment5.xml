@@ -71,7 +71,11 @@
             android:textColor="@color/black"
             android:textSize="26dp" />
     </LinearLayout>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:orientation="horizontal">
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -96,69 +100,81 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button
+        <ImageView
             android:id="@+id/button1"
-            android:layout_width="106dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bold"
-            android:textSize="15dp"
-            android:text="간편 식사" />
-        <Button
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginLeft="17dp"
+            android:background="@drawable/pi1"/>
+        <LinearLayout
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:orientation="horizontal">
+        </LinearLayout>
+        <ImageView
             android:id="@+id/button7"
-            android:layout_width="108dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bold"
-            android:textSize="15dp"
-            android:text="과자류" />
-
-        <Button
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:background="@drawable/pi2"/>
+        <LinearLayout
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:orientation="horizontal">
+        </LinearLayout>
+        <ImageView
             android:id="@+id/button3"
-            android:layout_width="106dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bold"
-            android:textSize="15dp"
-            android:text="즉석 조리" />
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:background="@drawable/pi3"/>
     </LinearLayout>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:orientation="horizontal">
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button
+        <ImageView
             android:id="@+id/button4"
-            android:layout_width="106dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bold"
-            android:textSize="15dp"
-            android:text="음료" />
-        <Button
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginLeft="17dp"
+            android:background="@drawable/pi4"/>
+        <LinearLayout
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:orientation="horizontal">
+        </LinearLayout>
+        <ImageView
             android:id="@+id/button5"
-            android:layout_width="108dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bold"
-            android:textSize="15dp"
-            android:text="아이스크림" />
-        <Button
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:background="@drawable/pi5"/>
+        <LinearLayout
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:orientation="horizontal">
+        </LinearLayout>
+        <ImageView
             android:id="@+id/button6"
-            android:layout_width="106dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bold"
-            android:textSize="15dp"
-            android:text="식품" />
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:background="@drawable/pi6" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="10dp"
         android:orientation="horizontal">
      </LinearLayout>
 
-    <Button
+    <ImageView
         android:id="@+id/button2"
-        android:layout_width="106dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/bold"
-        android:textSize="15dp"
-        android:text="생활 용품" />
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginLeft="17dp"
+        android:background="@drawable/pi7"/>
 
 </LinearLayout>

@@ -17,6 +17,8 @@ class Fragment5 : Fragment(), View.OnClickListener {
     private lateinit var imageButton5: ImageView
     private lateinit var imageButton6: ImageView
     private lateinit var imageButton7: ImageView
+    private lateinit var imageButton8: ImageView
+    private lateinit var imageButton9: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +35,8 @@ class Fragment5 : Fragment(), View.OnClickListener {
         imageButton5 = rootView.findViewById(R.id.imagebutton5)
         imageButton6 = rootView.findViewById(R.id.imagebutton6)
         imageButton7 = rootView.findViewById(R.id.imagebutton7)
+        imageButton8 = rootView.findViewById(R.id.imagebutton8)
+        imageButton9 = rootView.findViewById(R.id.imagebutton9)
 
         // 각 이미지 뷰에 클릭 리스너 설정
         imageButton1.setOnClickListener(this)
@@ -42,6 +46,8 @@ class Fragment5 : Fragment(), View.OnClickListener {
         imageButton5.setOnClickListener(this)
         imageButton6.setOnClickListener(this)
         imageButton7.setOnClickListener(this)
+        imageButton8.setOnClickListener(this)
+        imageButton9.setOnClickListener(this)
 
         return rootView
     }
@@ -69,6 +75,12 @@ class Fragment5 : Fragment(), View.OnClickListener {
             }
             R.id.imagebutton7 -> {
                 startActivity(Intent(activity, SearchActivity6::class.java))
+            }
+            R.id.imagebutton8 -> {
+                startActivity(Intent(activity, SearchActivity7::class.java))
+            }
+            R.id.imagebutton9 -> {
+                startActivity(Intent(activity, SearchActivity8::class.java))
             }
             // 나머지 이미지 뷰들에 대한 처리 추가
         }

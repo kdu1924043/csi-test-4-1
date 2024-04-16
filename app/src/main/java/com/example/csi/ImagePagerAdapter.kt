@@ -5,7 +5,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 
-class ImagePagerAdapter(private val context: Context, private val images: Array<Int>) : PagerAdapter() {
+class ImagePagerAdapter(
+    private val context: Context,
+    private val images: Array<Int>,
+    private val onImageClickListener: OnImageClickListener? = null
+) : PagerAdapter() {
 
     override fun getCount(): Int {
         return images.size
@@ -15,6 +19,11 @@ class ImagePagerAdapter(private val context: Context, private val images: Array<
         val imageView = ImageView(context)
         imageView.scaleType = ImageView.ScaleType.CENTER_CROP
         imageView.setImageResource(images[position])
+        if (onImageClickListener != null) {
+            imageView.setOnClickListener {
+                onImageClickListener.onImageClick(position)
+            }
+        }
         container.addView(imageView)
         return imageView
     }
@@ -25,5 +34,9 @@ class ImagePagerAdapter(private val context: Context, private val images: Array<
 
     override fun isViewFromObject(view: View, obj: Any): Boolean {
         return view == obj
+    }
+
+    interface OnImageClickListener {
+        fun onImageClick(position: Int)
     }
 }

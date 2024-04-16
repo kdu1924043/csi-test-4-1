@@ -1,6 +1,8 @@
 package com.example.csi
 
 import ImagePagerAdapter
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -19,9 +21,11 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewPager: ViewPager
+    private lateinit var viewPager2: ViewPager
     private lateinit var timer: Timer
+    private lateinit var timer2: Timer
 
-    private val delay: Long = 2000 // 슬라이드 간격 (3초)
+    private val delay: Long = 3000 // 슬라이드 간격 (2.5초)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,9 +51,13 @@ class HomeFragment : Fragment() {
         // ViewPager를 초기화하고 이미지 슬라이드 배너 설정
         viewPager = binding.viewPager
         val images = arrayOf(R.drawable.image1, R.drawable.image2, R.drawable.image3)
-        val adapter = ImagePagerAdapter(requireContext(), images)
+        val adapter = ImagePagerAdapter(requireContext(), images, onImageClickListener)
         viewPager.adapter = adapter
 
+        viewPager2 = binding.viewPager2
+        val images2 = arrayOf(R.drawable.image4, R.drawable.image5, R.drawable.image6)
+        val adapter2 = ImagePagerAdapter(requireContext(), images2) // 클릭 리스너 없이 어댑터 생성
+        viewPager2.adapter = adapter2
         // 자동 슬라이드 시작
         startAutoSlide()
     }
@@ -67,11 +75,46 @@ class HomeFragment : Fragment() {
                 }
             }
         }, delay, delay)
+
+        timer2 = Timer()
+        timer2.schedule(object : TimerTask() {
+            override fun run() {
+                Handler(Looper.getMainLooper()).post {
+                    if (viewPager2.currentItem == viewPager2.adapter?.count?.minus(1)) {
+                        viewPager2.currentItem = 0
+                    } else {
+                        viewPager2.currentItem = viewPager2.currentItem + 1
+                    }
+                }
+            }
+        }, delay, delay)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
         timer.cancel() // 프래그먼트가 제거될 때 타이머도 함께 종료합니다.
+    }
+    private val onImageClickListener = object : ImagePagerAdapter.OnImageClickListener {
+        override fun onImageClick(position: Int) {
+            // 각 이미지를 클릭했을 때 실행되는 로직
+            val url = when (position) {
+                0 -> "https://cu.bgfretail.com/brand_info/news_view.do?category=brand_info&depth2=5&idx=1025"
+                1 -> "https://cu.bgfretail.com/brand_info/news_view.do?category=brand_info&depth2=5&idx=1022"
+                2 -> "https://cu.bgfretail.com/brand_info/news_view.do?category=brand_info&depth2=5&idx=1021"
+                else -> "https://example.com" // 기본 URL
+            }
+            openWebPage(url)
+        }
+    }
+
+
+    // 웹페이지 열기
+    private fun openWebPage(url: String) {
+        val webpage = Uri.parse(url)
+        val intent = Intent(Intent.ACTION_VIEW, webpage)
+        if (intent.resolveActivity(requireActivity().packageManager) != null) {
+            startActivity(intent)
+        }
     }
 }

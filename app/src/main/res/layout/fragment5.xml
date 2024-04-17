@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/Title1"
-            android:layout_width="90dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="116dp"
             android:fontFamily="@font/bold"
             android:text="행사 상품"
             android:textColor="@color/black"
-            android:textSize="26dp" />
-    </LinearLayout>
+            android:textSize="26dp"
+            android:gravity="center"
+            />
+        </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="20dp"
@@ -24,22 +27,40 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
         android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        </LinearLayout>
+
         <ImageView
             android:id="@+id/imagebutton8"
-            android:layout_width="130dp"
-            android:layout_height="90dp"
-            android:layout_marginLeft="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/pl2" />
+        <LinearLayout
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        </LinearLayout>
+
         <ImageView
             android:id="@+id/imagebutton9"
-            android:layout_width="130dp"
-            android:layout_height="90dp"
-            android:layout_marginLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/pl1" />
-
+        <LinearLayout
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        </LinearLayout>
     </LinearLayout>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="20dp"
@@ -50,14 +71,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
     <TextView
         android:id="@+id/Title"
-        android:layout_width="89dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="116dp"
         android:fontFamily="@font/bold"
         android:text="일반 상품"
         android:textColor="@color/black"
+        android:gravity="center"
         android:textSize="26dp" />
 </LinearLayout>
     <LinearLayout
@@ -67,34 +89,46 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
         android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+        </LinearLayout>
         <ImageView
             android:id="@+id/imagebutton1"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:layout_marginLeft="17dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/pi1"/>
         <LinearLayout
             android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
         </LinearLayout>
         <ImageView
             android:id="@+id/imagebutton7"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/pi2"/>
         <LinearLayout
             android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
         </LinearLayout>
         <ImageView
             android:id="@+id/imagebutton3"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/pi3"/>
+        <LinearLayout
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -103,34 +137,46 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
         android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+        </LinearLayout>
         <ImageView
             android:id="@+id/imagebutton4"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:layout_marginLeft="17dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/pi4"/>
         <LinearLayout
             android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
         </LinearLayout>
         <ImageView
             android:id="@+id/imagebutton5"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/pi5"/>
         <LinearLayout
             android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
         </LinearLayout>
         <ImageView
             android:id="@+id/imagebutton6"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/pi6" />
+        <LinearLayout
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -138,12 +184,25 @@
         android:layout_height="10dp"
         android:orientation="horizontal">
      </LinearLayout>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+        </LinearLayout>
     <ImageView
         android:id="@+id/imagebutton2"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_marginLeft="17dp"
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
         android:background="@drawable/pi7"/>
+        <LinearLayout
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

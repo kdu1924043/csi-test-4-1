@@ -83,6 +83,31 @@
             android:name=".SearchActivity13"
             android:exported="false" />
         <activity
+            android:name=".SearchActivity14"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity15"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity16"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity17"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity18"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity19"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity20"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity21"
+            android:exported="false" />
+
+        <activity
             android:name=".JoinActivity"
             android:exported="true" />
         <activity

@@ -19,6 +19,12 @@ class Fragment5 : Fragment(), View.OnClickListener {
     private lateinit var imageButton7: ImageView
     private lateinit var imageButton8: ImageView
     private lateinit var imageButton9: ImageView
+    private lateinit var imageButton10: ImageView
+    private lateinit var imageButton11: ImageView
+    private lateinit var imageButton12: ImageView
+    private lateinit var imageButton13: ImageView
+    private lateinit var imageButton14: ImageView
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +43,11 @@ class Fragment5 : Fragment(), View.OnClickListener {
         imageButton7 = rootView.findViewById(R.id.imagebutton7)
         imageButton8 = rootView.findViewById(R.id.imagebutton8)
         imageButton9 = rootView.findViewById(R.id.imagebutton9)
+        imageButton10 = rootView.findViewById(R.id.imagebutton10)
+        imageButton11 = rootView.findViewById(R.id.imagebutton11)
+        imageButton12 = rootView.findViewById(R.id.imagebutton12)
+        imageButton13 = rootView.findViewById(R.id.imagebutton13)
+        imageButton14 = rootView.findViewById(R.id.imagebutton14)
 
         // 각 이미지 뷰에 클릭 리스너 설정
         imageButton1.setOnClickListener(this)
@@ -48,6 +59,12 @@ class Fragment5 : Fragment(), View.OnClickListener {
         imageButton7.setOnClickListener(this)
         imageButton8.setOnClickListener(this)
         imageButton9.setOnClickListener(this)
+        imageButton10.setOnClickListener(this)
+        imageButton11.setOnClickListener(this)
+        imageButton12.setOnClickListener(this)
+        imageButton13.setOnClickListener(this)
+        imageButton14.setOnClickListener(this)
+
 
         return rootView
     }
@@ -81,6 +98,21 @@ class Fragment5 : Fragment(), View.OnClickListener {
             }
             R.id.imagebutton9 -> {
                 startActivity(Intent(activity, SearchActivity8::class.java))
+            }
+            R.id.imagebutton10 -> {
+                startActivity(Intent(activity, SearchActivity9::class.java))
+            }
+            R.id.imagebutton11 -> {
+                startActivity(Intent(activity, SearchActivity10::class.java))
+            }
+            R.id.imagebutton12 -> {
+                startActivity(Intent(activity, SearchActivity11::class.java))
+            }
+            R.id.imagebutton13 -> {
+                startActivity(Intent(activity, SearchActivity12::class.java))
+            }
+            R.id.imagebutton14 -> {
+                startActivity(Intent(activity, SearchActivity13::class.java))
             }
             // 나머지 이미지 뷰들에 대한 처리 추가
         }

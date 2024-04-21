@@ -16,7 +16,7 @@ import java.io.IOException
 import java.nio.charset.Charset
 import android.widget.Button
 
-class SearchActivity1 : AppCompatActivity() {
+class SearchActivity13 : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ItemAdapter
@@ -40,7 +40,7 @@ class SearchActivity1 : AppCompatActivity() {
         btn1500To3000 = findViewById(R.id.btn1500To3000)
         btnAbove5000 = findViewById(R.id.btnAbove5000)
 
-        val json: String = loadJSONFromAsset("co.json") ?: ""
+        val json: String = loadJSONFromAsset("salad.json") ?: ""
 
         val jsonArray = JSONArray(json)
 

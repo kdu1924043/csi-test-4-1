@@ -14,6 +14,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
 import java.nio.charset.Charset
+import android.widget.Button
 
 class SearchActivity5 : AppCompatActivity() {
 
@@ -23,6 +24,10 @@ class SearchActivity5 : AppCompatActivity() {
     private lateinit var itemList: MutableList<Item>
     private lateinit var filteredList: MutableList<Item>
 
+    private lateinit var btnBelow1500: Button
+    private lateinit var btn1500To3000: Button
+    private lateinit var btnAbove5000: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -30,6 +35,11 @@ class SearchActivity5 : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         searchEditText = findViewById(R.id.searchEditText)
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        // ADD HERE: 버튼 초기화
+        btnBelow1500 = findViewById(R.id.btnBelow1500)
+        btn1500To3000 = findViewById(R.id.btn1500To3000)
+        btnAbove5000 = findViewById(R.id.btnAbove5000)
 
         val json: String = loadJSONFromAsset("sic.json") ?: ""
 
@@ -60,6 +70,11 @@ class SearchActivity5 : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {}
         })
+
+        // ADD HERE: 각 버튼에 대한 클릭 리스너 설정
+        btnBelow1500.setOnClickListener { filterByPriceRange(0, 1500) }
+        btn1500To3000.setOnClickListener { filterByPriceRange(1500, 3000) }
+        btnAbove5000.setOnClickListener { filterByPriceRange(5000, Int.MAX_VALUE) }
     }
 
     private fun filter(text: String) {
@@ -71,6 +86,17 @@ class SearchActivity5 : AppCompatActivity() {
                 if (item.name.contains(text, ignoreCase = true)) {
                     filteredList.add(item)
                 }
+            }
+        }
+        adapter.notifyDataSetChanged()
+    }
+
+    // ADD HERE: 가격대에 따라 itemList 필터링
+    private fun filterByPriceRange(minPrice: Int, maxPrice: Int) {
+        filteredList.clear()
+        for (item in itemList) {
+            if (item.price in minPrice..maxPrice) {
+                filteredList.add(item)
             }
         }
         adapter.notifyDataSetChanged()

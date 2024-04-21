@@ -1,4 +1,5 @@
 package com.example.csi
+
 import Item
 import ItemAdapter
 import android.os.Bundle
@@ -13,6 +14,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
 import java.nio.charset.Charset
+import android.widget.Button
 
 class SearchActivity : AppCompatActivity() {
 
@@ -22,6 +24,10 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var itemList: MutableList<Item>
     private lateinit var filteredList: MutableList<Item>
 
+    private lateinit var btnBelow1500: Button
+    private lateinit var btn1500To3000: Button
+    private lateinit var btnAbove5000: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -30,7 +36,11 @@ class SearchActivity : AppCompatActivity() {
         searchEditText = findViewById(R.id.searchEditText)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val json: String = loadJSONFromAsset("data.json") ?: ""
+        btnBelow1500 = findViewById(R.id.btnBelow1500)
+        btn1500To3000 = findViewById(R.id.btn1500To3000)
+        btnAbove5000 = findViewById(R.id.btnAbove5000)
+
+        val json: String = loadJSONFromAsset("rice.json") ?: ""
 
         val jsonArray = JSONArray(json)
 
@@ -59,6 +69,10 @@ class SearchActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {}
         })
+
+        btnBelow1500.setOnClickListener { filterByPriceRange(0, 1500) }
+        btn1500To3000.setOnClickListener { filterByPriceRange(1500, 3000) }
+        btnAbove5000.setOnClickListener { filterByPriceRange(5000, Int.MAX_VALUE) }
     }
 
     private fun filter(text: String) {
@@ -70,6 +84,16 @@ class SearchActivity : AppCompatActivity() {
                 if (item.name.contains(text, ignoreCase = true)) {
                     filteredList.add(item)
                 }
+            }
+        }
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun filterByPriceRange(minPrice: Int, maxPrice: Int) {
+        filteredList.clear()
+        for (item in itemList) {
+            if (item.price in minPrice..maxPrice) {
+                filteredList.add(item)
             }
         }
         adapter.notifyDataSetChanged()

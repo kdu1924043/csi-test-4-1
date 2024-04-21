@@ -10,10 +10,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:context=".ContentDetailActivity">
-
             <TextView
                 android:id="@+id/textViewTitle"
-                android:layout_width="200dp"
+                android:layout_width="260dp"
                 android:layout_height="wrap_content"
                 android:text="Title"
                 android:fontFamily="@font/bold"
@@ -39,7 +38,7 @@
                 android:id="@+id/likesCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="200dp"
+                android:layout_marginStart="280dp"
                 android:layout_marginTop="-25dp"
                 android:text="0"
                 android:textSize="16sp"

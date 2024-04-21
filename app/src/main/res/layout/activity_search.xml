@@ -44,7 +44,7 @@
             android:fontFamily="@font/bold"
             android:textColor="@color/black"
             android:background="@color/nocolor"
-            android:text="1500 ~ 3000원" />
+            android:text="1500 ~ 4999원" />
         </LinearLayout>
 
         <LinearLayout

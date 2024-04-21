@@ -71,7 +71,7 @@ class SearchActivity15 : AppCompatActivity() {
         })
 
         btnBelow1500.setOnClickListener { filterByPriceRange(0, 1500) }
-        btn1500To3000.setOnClickListener { filterByPriceRange(1500, 3000) }
+        btn1500To3000.setOnClickListener { filterByPriceRange(1500, 4999) }
         btnAbove5000.setOnClickListener { filterByPriceRange(5000, Int.MAX_VALUE) }
     }
 

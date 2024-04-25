@@ -6,17 +6,18 @@ data class ContentModel(
     val content: String = "",
     val time: String = "",
     val id: String = "",
-    val userId: String = "", // 사용자 아이디 추가
+    val userEmail: String = "", // 사용자 이메일 추가
     val imageUrl: String = "",
     var likes: Int = 0
 ) : Parcelable {
 
+    // Parcelable 구현을 위한 생성자
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "",
-        parcel.readString() ?: "", // 사용자 아이디 추가
+        parcel.readString() ?: "", // 사용자 이메일 읽기
         parcel.readString() ?: "",
         parcel.readInt()
     )
@@ -26,14 +27,12 @@ data class ContentModel(
         parcel.writeString(content)
         parcel.writeString(time)
         parcel.writeString(id)
-        parcel.writeString(userId)
-        parcel.writeString(imageUrl)// 사용자 아이디 추가
+        parcel.writeString(userEmail) // 사용자 이메일 쓰기
+        parcel.writeString(imageUrl)
         parcel.writeInt(likes)
     }
 
-    override fun describeContents(): Int {
-        return 0
-    }
+    override fun describeContents(): Int = 0
 
     companion object CREATOR : Parcelable.Creator<ContentModel> {
         override fun createFromParcel(parcel: Parcel): ContentModel {

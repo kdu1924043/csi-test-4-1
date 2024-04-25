@@ -14,6 +14,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/CountTextView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="5dp"
+                android:fontFamily="@font/bold"
+                android:text="작성자 : "
+                android:textSize="10sp" />
+            <TextView
+                android:id="@+id/emailArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="3dp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/bold"
+                android:textSize="10sp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/titleArea"
@@ -22,36 +45,27 @@
             android:layout_marginLeft="5dp"
             android:textColor="@color/black"
             android:fontFamily="@font/bold"
-            android:textSize="16sp"
+            android:textSize="19dp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/contentArea"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="13dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/black"
             android:fontFamily="@font/bold"
-            android:textSize="14sp" />
-        <TextView
-            android:id="@+id/timeArea"
-            android:layout_width="match_parent"
-            android:layout_height="15dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="7dp"
             android:textColor="@color/black"
-            android:fontFamily="@font/bold"
-            android:textSize="10sp" />
+            android:textSize="12dp" />
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/CountTextView"
                 android:layout_width="wrap_content"
-                android:layout_height="19dp"
-                android:layout_marginTop="7dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
                 android:layout_marginLeft="5dp"
                 android:fontFamily="@font/bold"
                 android:text="추천 : "
@@ -59,12 +73,35 @@
             <TextView
                 android:id="@+id/likesCount"
                 android:layout_width="match_parent"
-                android:layout_height="19dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginTop="7dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="3dp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/bold"
                 android:textSize="14sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/CountTextView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="5dp"
+                android:fontFamily="@font/bold"
+                android:text="작성 시간 : "
+                android:textSize="10sp" />
+            <TextView
+                android:id="@+id/timeArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="3dp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/bold"
+                android:textSize="10sp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

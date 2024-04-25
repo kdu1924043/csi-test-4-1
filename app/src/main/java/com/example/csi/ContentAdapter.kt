@@ -29,6 +29,7 @@ class ContentAdapter(
         private val titleTextView: TextView = itemView.findViewById(R.id.titleArea)
         private val contentTextView: TextView = itemView.findViewById(R.id.contentArea)
         private val timeTextView: TextView = itemView.findViewById(R.id.timeArea)
+        private val emailTextView: TextView = itemView.findViewById(R.id.emailArea)
         private val likeTextView: TextView = itemView.findViewById(R.id.likesCount)
         private val imageView: ImageView = itemView.findViewById(R.id.imageView)
 
@@ -45,6 +46,7 @@ class ContentAdapter(
             titleTextView.text = contentModel.title
             contentTextView.text = contentModel.content
             timeTextView.text = contentModel.time
+            emailTextView.text = contentModel.userEmail
             likeTextView.text = contentModel.likes.toString()
 
             // Glide를 사용하여 이미지 로드

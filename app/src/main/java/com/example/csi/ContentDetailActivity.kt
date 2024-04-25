@@ -15,7 +15,7 @@ class ContentDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityContentDetailBinding
     private lateinit var contentModel: ContentModel
     private lateinit var database: DatabaseReference
-    private lateinit var currentUserId: String
+    private lateinit var currentUserEmail: String
     private var contentLikesRef: DatabaseReference? = null
     private var userLikedRef: DatabaseReference? = null
     private var userLiked = false
@@ -30,20 +30,18 @@ class ContentDetailActivity : AppCompatActivity() {
         if (imageUrl.isNotEmpty()) {
             Picasso.get().load(imageUrl).into(binding.imageView)
         } else {
-            // 이미지가 없는 상태로 유지합니다.
             binding.imageView.setImageDrawable(null)
         }
 
-
-        // ContentModel에 저장된 좋아요 수를 TextView에 설정
         binding.likesCount.text = contentModel.likes.toString()
-
         binding.textViewTitle.text = contentModel.title
         binding.textViewContent.text = contentModel.content
         database = FirebaseDatabase.getInstance().reference.child("content")
-        currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+        currentUserEmail = FirebaseAuth.getInstance().currentUser?.email ?: ""
+        val username = currentUserEmail.substringBefore('@')  // '@' 이전의 부분만 추출
+
         contentLikesRef = database.child(contentModel.id).child("likes")
-        userLikedRef = database.child(contentModel.id).child("likedBy").child(currentUserId)
+        userLikedRef = database.child(contentModel.id).child("likedBy").child(username)  // username을 사용
 
         userLikedRef?.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -52,23 +50,9 @@ class ContentDetailActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // 에러 처리
                 Toast.makeText(this@ContentDetailActivity, "좋아요 상태를 불러오는 중 에러가 발생했습니다.", Toast.LENGTH_SHORT).show()
             }
         })
-
-        contentLikesRef?.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val likesCount = snapshot.getValue(Int::class.java) ?: 0
-                binding.likesCount.text = likesCount.toString()
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // 에러 처리
-                Toast.makeText(this@ContentDetailActivity, "좋아요 수를 불러오는 중 에러가 발생했습니다.", Toast.LENGTH_SHORT).show()
-            }
-        })
-
 
         binding.imagelikeButton.setOnClickListener {
             toggleLike()
@@ -78,6 +62,7 @@ class ContentDetailActivity : AppCompatActivity() {
             deleteContent(contentModel)
         }
     }
+
 
     private fun toggleLike() {
         if (userLiked) {
@@ -141,18 +126,18 @@ class ContentDetailActivity : AppCompatActivity() {
         val contentId = contentModel.id
 
         // 해당 게시물의 작성자 아이디를 가져옵니다.
-        val authorId = contentModel.userId
+        val authorEmail = contentModel.userEmail
 
         // 현재 사용자의 아이디를 가져옵니다.
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        val currentUserId = currentUser?.uid
+        val currentUserEmail = FirebaseAuth.getInstance().currentUser?.email
 
         // 현재 사용자의 아이디가 null이 아니고, 작성자의 아이디와 일치하는 경우에만 삭제합니다.
-        if (currentUserId != null && currentUserId == authorId) {
+        if (currentUserEmail != null && currentUserEmail == authorEmail) {
             database.child(contentId).removeValue()
                 .addOnSuccessListener {
                     // MainActivity에서 ContentListFragment로 전환하기 위해 MainActivity로 되돌아가야 함
                     onBackPressed()
+                    Toast.makeText(this, "게시물이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener {
                     Toast.makeText(this, "삭제 실패", Toast.LENGTH_SHORT).show()

@@ -19,7 +19,7 @@ import java.util.*
 class ContentWriteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityContentWriteBinding
     private val database = FirebaseDatabase.getInstance().reference.child("content")
-    private val currentUser = FirebaseAuth.getInstance().currentUser
+    private val currentUserEmail = FirebaseAuth.getInstance().currentUser?.email
     private val storageRef = FirebaseStorage.getInstance().reference.child("images")
     private var selectedImageUri: Uri? = null
 
@@ -86,9 +86,9 @@ class ContentWriteActivity : AppCompatActivity() {
         val time = getTime()
         val key = database.push().key ?: ""
         if (key.isNotEmpty()) {
-            val userId = currentUser?.uid ?: ""
-            val contentModel = imageUrl?.let { ContentModel(title, content, time, key, userId, it) }
-            Log.d("SaveContent", "ImageUrl: $imageUrl") // 추가된 로그
+            val userEmail = currentUserEmail ?: "anonymous@example.com"  // 이메일 사용
+            val contentModel = imageUrl?.let { ContentModel(title, content, time, key, userEmail, it) }
+            Log.d("SaveContent", "UserEmail: $userEmail, ImageUrl: $imageUrl")
             database.child(key).setValue(contentModel)
                 .addOnSuccessListener {
                     Toast.makeText(this, "게시글 입력 완료", Toast.LENGTH_SHORT).show()
@@ -98,9 +98,10 @@ class ContentWriteActivity : AppCompatActivity() {
                     Toast.makeText(this, "게시글 입력 실패", Toast.LENGTH_SHORT).show()
                 }
         } else {
-            Toast.makeText(this, "게시글 입력 실패", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "게시글 키 생성 실패", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun getTime(): String {
         val currentDateTime = Calendar.getInstance().time

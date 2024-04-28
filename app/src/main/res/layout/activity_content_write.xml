@@ -22,7 +22,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="글쓰기"
+                    android:text="작성"
                     android:fontFamily="@font/bold"
                     android:textColor="@color/black"
                     android:textSize="25dp"

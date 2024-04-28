@@ -33,7 +33,6 @@ class ContentDetailActivity : AppCompatActivity() {
             binding.imageView.setImageDrawable(null)
         }
 
-        binding.likesCount.text = contentModel.likes.toString()
         binding.textViewTitle.text = contentModel.title
         binding.textViewContent.text = contentModel.content
         database = FirebaseDatabase.getInstance().reference.child("content")

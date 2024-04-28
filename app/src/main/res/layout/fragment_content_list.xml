@@ -29,9 +29,9 @@
 
         <ImageView
             android:id="@+id/contentWriteBtn"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            android:background="@drawable/writeback"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/baseline_create_24"
             android:layout_gravity="end|bottom" />
 
     </LinearLayout>

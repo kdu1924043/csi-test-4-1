@@ -116,9 +116,9 @@ class ContentDetailActivity : AppCompatActivity() {
     }
     private fun updateLikeButtonState() {
         if (userLiked) {
-            binding.imagelikeButton.setBackgroundResource(R.drawable.unlikeback) // 좋아요를 이미 눌렀을 때
+            binding.imagelikeButton.setBackgroundResource(R.drawable.baseline_favorite_24) // 좋아요를 이미 눌렀을 때
         } else {
-            binding.imagelikeButton.setBackgroundResource(R.drawable.likeback) // 좋아요를 아직 누르지 않았을 때
+            binding.imagelikeButton.setBackgroundResource(R.drawable.baseline_favorite_border_24) // 좋아요를 아직 누르지 않았을 때
         }
     }
 

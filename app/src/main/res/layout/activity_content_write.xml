@@ -64,10 +64,11 @@
                 android:orientation="horizontal">
                 <ImageView
                     android:id="@+id/imageSelectButton"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginStart="20dp"
-                    android:background="@drawable/cameraback"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/baseline_photo_camera_back_24"
                     android:text="이미지 선택"
                     android:textSize="16sp" />
             </LinearLayout>

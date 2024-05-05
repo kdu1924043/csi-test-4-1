@@ -21,11 +21,10 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewPager: ViewPager
-    private lateinit var viewPager2: ViewPager
     private lateinit var timer: Timer
-    private lateinit var timer2: Timer
 
-    private val delay: Long = 3000 // 슬라이드 간격 (2.5초)
+
+    private val delay: Long = 3000 // 슬라이드 간격 (3초)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,12 +52,6 @@ class HomeFragment : Fragment() {
         val images = arrayOf(R.drawable.image1, R.drawable.image2, R.drawable.image3)
         val adapter = ImagePagerAdapter(requireContext(), images, onImageClickListener)
         viewPager.adapter = adapter
-
-        viewPager2 = binding.viewPager2
-        val images2 = arrayOf(R.drawable.image4, R.drawable.image5, R.drawable.image6)
-        val adapter2 = ImagePagerAdapter(requireContext(), images2) // 클릭 리스너 없이 어댑터 생성
-        viewPager2.adapter = adapter2
-        // 자동 슬라이드 시작
         startAutoSlide()
     }
 
@@ -71,19 +64,6 @@ class HomeFragment : Fragment() {
                         viewPager.currentItem = 0
                     } else {
                         viewPager.currentItem = viewPager.currentItem + 1
-                    }
-                }
-            }
-        }, delay, delay)
-
-        timer2 = Timer()
-        timer2.schedule(object : TimerTask() {
-            override fun run() {
-                Handler(Looper.getMainLooper()).post {
-                    if (viewPager2.currentItem == viewPager2.adapter?.count?.minus(1)) {
-                        viewPager2.currentItem = 0
-                    } else {
-                        viewPager2.currentItem = viewPager2.currentItem + 1
                     }
                 }
             }

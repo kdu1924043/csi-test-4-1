@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
     private val Fragment_3 = 3
     private val Fragment_4 = 4
     private val Fragment_5 = 5
-    private val Fragment_6 = 6
+    private val Fragment_7 = 7
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             fragmentView(Fragment_5)
         }
         findViewById<View>(R.id.btn4).setOnClickListener {
-            fragmentView(Fragment_6)
+            fragmentView(Fragment_7)
         }
     }
 
@@ -64,9 +64,9 @@ class MainActivity : AppCompatActivity() {
                 transaction.replace(R.id.fragment_container, fragment5)
             }
 
-            6 -> {
-                val fragment6 = Fragment6()
-                transaction.replace(R.id.fragment_container, fragment6)
+            7 -> {
+                val fragment7 = Fragment7()
+                transaction.replace(R.id.fragment_container, fragment7)
             }
         }
         transaction.commit()

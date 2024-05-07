@@ -1,5 +1,6 @@
 package com.example.csi
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -12,10 +13,13 @@ class TradeFragment : Fragment(R.layout.fragment7) {
         super.onViewCreated(view, savedInstanceState)
 
         val imageView = view.findViewById<ImageView>(R.id.imagebutton1)
-        // ImageView 사용 예: 클릭 리스너 설정
+// ImageView 클릭 리스너 설정
         imageView.setOnClickListener {
-            // 이미지 클릭 시 수행할 작업
+            // Intent 생성 및 BuyActivity로 이동
+            val intent = Intent(context, BuyActivity::class.java)
+            startActivity(intent)
         }
+
 
         val imageView1 = view.findViewById<ImageView>(R.id.imagebutton2)
         // ImageView 사용 예: 클릭 리스너 설정

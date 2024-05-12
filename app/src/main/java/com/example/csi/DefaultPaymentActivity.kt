@@ -1,10 +1,10 @@
 package com.example.csi
 
 import android.os.Bundle
-
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import kr.co.bootpay.android.Bootpay
 import kr.co.bootpay.android.constants.BootpayBuildConfig
 import kr.co.bootpay.android.events.BootpayEventListener
@@ -14,7 +14,7 @@ import kr.co.bootpay.android.models.BootUser
 import kr.co.bootpay.android.models.Payload
 
 class DefaultPaymentActivity: AppCompatActivity() {
-    //    BootpayWebView bootpayWebView;
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     var applicationId = "663a3fae19b42d44e97685ba"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +24,6 @@ class DefaultPaymentActivity: AppCompatActivity() {
             applicationId = "663a3fae19b42d44e97685ba"
         }
     }
-
 
     fun PaymentTest(v: View?) {
         val extra = BootExtra()
@@ -50,7 +49,7 @@ class DefaultPaymentActivity: AppCompatActivity() {
         map["2"] = "abcdef55"
         map["3"] = 1234
         payload.metadata = map
-        //        payload.setMetadata(new Gson().toJson(map));
+
         Bootpay.init(supportFragmentManager, applicationContext)
             .setPayload(payload)
             .setEventListener(object : BootpayEventListener {
@@ -72,9 +71,7 @@ class DefaultPaymentActivity: AppCompatActivity() {
 
                 override fun onConfirm(data: String): Boolean {
                     Log.d("bootpay", "confirm: $data")
-                    //                        Bootpay.transactionConfirm(data); //재고가 있어서 결제를 진행하려 할때 true (방법 1)
-                    return true //재고가 있어서 결제를 진행하려 할때 true (방법 2)
-                    //                        return false; //결제를 진행하지 않을때 false
+                    return true
                 }
 
                 override fun onDone(data: String) {
@@ -84,15 +81,15 @@ class DefaultPaymentActivity: AppCompatActivity() {
     }
 
     fun getBootUser(): BootUser? {
-        val userId = "123411aaaaaaaaaaaabd4ss121"
+        val currentUserEmail = getCurrentUserEmail()
         val user = BootUser()
-        user.id = userId
-        user.area = "서울"
-        user.gender = 1 //1: 남자, 0: 여자
-        user.email = "test1234@gmail.com"
-        user.phone = "010-1234-4567"
-        user.birth = "1988-06-10"
-        user.username = "홍길동"
+        user.email = currentUserEmail
+        // Add other user details as needed
         return user
+    }
+
+    private fun getCurrentUserEmail(): String? {
+        val currentUser = auth.currentUser
+        return currentUser?.email
     }
 }

@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.example.csi.databinding.Fragment4Binding
-import com.example.csi.R
 import java.util.Timer
 import java.util.TimerTask
 
@@ -49,7 +48,7 @@ class HomeFragment : Fragment() {
 
         // ViewPager를 초기화하고 이미지 슬라이드 배너 설정
         viewPager = binding.viewPager
-        val images = arrayOf(R.drawable.image1, R.drawable.image2, R.drawable.image3)
+        val images = arrayOf(R.drawable.a, R.drawable.b, R.drawable.c,R.drawable.d,R.drawable.f,R.drawable.g)
         val adapter = ImagePagerAdapter(requireContext(), images, onImageClickListener)
         viewPager.adapter = adapter
         startAutoSlide()

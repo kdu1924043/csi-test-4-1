@@ -97,7 +97,7 @@
         <ImageView
             android:id="@+id/btn4"
             style="@android:style/Widget.Holo.Button"
-            android:background="@drawable/baseline_cached_24"
+            android:background="@drawable/baseline_paid_24"
             android:layout_marginTop="5dp"
             android:layout_width="40dp"
             android:layout_height="40dp"

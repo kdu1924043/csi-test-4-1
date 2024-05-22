@@ -56,7 +56,8 @@ class HomeFragment : Fragment() {
         }
 
         recyclerView = binding.recyclerView
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
 
         // ViewPager를 초기화하고 이미지 슬라이드 배너 설정
         viewPager = binding.viewPager

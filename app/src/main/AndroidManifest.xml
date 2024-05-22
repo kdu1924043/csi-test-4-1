@@ -44,7 +44,9 @@
         <activity
             android:name=".TotalPaymentActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".ListActivity"
+            android:exported="false" />
         <activity
             android:name=".BuyActivity"
             android:exported="false" />

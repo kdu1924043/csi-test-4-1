@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="280dp"
         android:layout_weight="1"
-        android:background="@drawable/gitf1" />
+        android:background="@drawable/g10" />
         <LinearLayout
             android:layout_width="50dp"
             android:layout_height="match_parent"

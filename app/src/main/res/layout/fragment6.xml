@@ -35,6 +35,11 @@
         android:textColor="@color/black"
         android:backgroundTint="@color/nocolor"
         android:fontFamily="@font/bold" />
+        <Button
+            android:id="@+id/move_to_list_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="내가 쓴 글" />
     </LinearLayout>
 
 </LinearLayout>

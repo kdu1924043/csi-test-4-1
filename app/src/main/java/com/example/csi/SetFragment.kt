@@ -51,5 +51,9 @@ class SetFragment : Fragment(R.layout.fragment6) {
         view.findViewById<Button>(R.id.delete_account_button).setOnClickListener {
             deleteAccount()
         }
+        view.findViewById<Button>(R.id.move_to_list_button).setOnClickListener {
+            val intent = Intent(requireContext(), ListActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

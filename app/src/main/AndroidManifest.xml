@@ -42,10 +42,16 @@
             android:name=".DefaultPaymentActivity"
             android:exported="false" />
         <activity
+            android:name=".TotalPaymentActivity2"
+            android:exported="false" />
+        <activity
             android:name=".TotalPaymentActivity"
             android:exported="false" />
         <activity
             android:name=".ListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Buy2Activity"
             android:exported="false" />
         <activity
             android:name=".BuyActivity"

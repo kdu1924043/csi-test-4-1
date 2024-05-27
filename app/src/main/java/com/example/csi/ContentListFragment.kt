@@ -1,6 +1,7 @@
 package com.example.csi
 
 import ContentAdapter
+import ContentModel
 import com.example.csi.ContentWriteActivity
 import android.content.Intent
 import android.os.Bundle
@@ -38,7 +39,12 @@ class ContentListFragment : Fragment() {
         binding.contentWriteBtn.setOnClickListener {
             startActivity(Intent(requireContext(), ContentWriteActivity::class.java))
         }
-
+        binding.sortByLikesBtn.setOnClickListener {
+            sortContentListByLikes()
+        }
+        binding.sortByTimeBtn1.setOnClickListener {
+            sortContentListByTime()
+        }
         getFBContentData()
 
         return binding.root
@@ -63,7 +69,14 @@ class ContentListFragment : Fragment() {
         }
         FBRef.contentRef.addValueEventListener(postListener)
     }
-
+    private fun sortContentListByLikes() {
+        contentList.sortByDescending { it.likes }
+        contentAdapter.notifyDataSetChanged()
+    }
+    private fun sortContentListByTime() {
+        contentList.sortByDescending { it.time }
+        contentAdapter.notifyDataSetChanged()
+    }
     private fun onContentItemClick(contentModel: ContentModel) {
         val intent = Intent(requireContext(), ContentDetailActivity::class.java)
         intent.putExtra("contentModel", contentModel)

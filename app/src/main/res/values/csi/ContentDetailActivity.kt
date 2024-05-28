@@ -1,4 +1,4 @@
-package com.example.csi
+package values.csi
 
 import ContentModel
 import android.os.Bundle
@@ -63,9 +63,7 @@ class ContentDetailActivity : AppCompatActivity() {
         }
 
         // 댓글 관련 초기화 코드
-        // 댓글 관련 초기화 코드
-        commentAdapter = CommentAdapter(commentsList, this, database, contentModel.id, contentModel.userEmail)
-
+        commentAdapter = CommentAdapter(commentsList)
         binding.recyclerViewComments.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewComments.adapter = commentAdapter
 
@@ -171,13 +169,11 @@ class ContentDetailActivity : AppCompatActivity() {
             )
             database.child(contentModel.id).child("comments").child(commentId).setValue(comment)
                 .addOnSuccessListener {
-                    commentsList.add(comment)
-                    commentAdapter.notifyItemInserted(commentsList.size - 1)
                     binding.editTextComment.text.clear()
-                    Toast.makeText(this, "댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "댓글이 추가되었습니다.", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener {
-                    Toast.makeText(this, "댓글 등록 실패", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "댓글 추가 실패", Toast.LENGTH_SHORT).show()
                 }
         }
     }
@@ -186,15 +182,15 @@ class ContentDetailActivity : AppCompatActivity() {
         database.child(contentModel.id).child("comments").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 commentsList.clear()
-                for (dataSnapshot in snapshot.children) {
-                    val comment = dataSnapshot.getValue(CommentModel::class.java)
+                for (commentSnapshot in snapshot.children) {
+                    val comment = commentSnapshot.getValue(CommentModel::class.java)
                     comment?.let { commentsList.add(it) }
                 }
                 commentAdapter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@ContentDetailActivity, "댓글을 불러오는 중 에러가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ContentDetailActivity, "댓글 불러오기 실패", Toast.LENGTH_SHORT).show()
             }
         })
     }

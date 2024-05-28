@@ -1,4 +1,4 @@
-package com.example.csi
+package values.csi
 
 import android.content.Context
 import android.content.pm.PackageManager
@@ -35,9 +35,7 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener {
     private val listAdapter = ListAdapter(listItems) // 리사이클러 뷰 어댑터
     private var pageNumber = 1 // 검색 페이지 번호
     private var keyword = "" // 검색 키워드
-    private val cuMarkerResourceId = R.drawable.img_cs_mini_cu // CU 마커 이미지 리소스 ID
-    private val gs25MarkerResourceId = R.drawable.emart24// GS25 마커 이미지 리소스 ID
-    private val sevenElevenMarkerResourceId = R.drawable.seven1// 7-Eleven 마커 이미지 리소스 ID
+    private val customMarkerResourceId = R.drawable.img_cs_mini_cu // 사용자 정의 마커 이미지 리소스 ID
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -83,25 +81,6 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener {
         binding.btnNextPage.setOnClickListener {
             pageNumber++
             binding.tvPageNumber.text = pageNumber.toString()
-            searchKeyword(keyword, pageNumber)
-        }
-
-        // 편의점 검색 버튼 이벤트 처리
-        binding.buttonCU.setOnClickListener {
-            keyword = "양주 경동대 cu"
-            pageNumber = 1
-            searchKeyword(keyword, pageNumber)
-        }
-
-        binding.buttonGS25.setOnClickListener {
-            keyword = "양주 경동대 emart24"
-            pageNumber = 1
-            searchKeyword(keyword, pageNumber)
-        }
-
-        binding.button7Eleven.setOnClickListener {
-            keyword = "양주시 경동대학로 7-Eleven"
-            pageNumber = 1
             searchKeyword(keyword, pageNumber)
         }
 
@@ -177,12 +156,15 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener {
 
     // 키워드 검색 함수
     private fun searchKeyword(keyword: String, page: Int) {
+        // 기본적으로는 입력된 키워드를 사용하고, "cu" 키워드를 추가하여 검색 쿼리를 생성
+        val searchQuery = "$keyword cu"
+
         val retrofit = Retrofit.Builder() // Retrofit 구성
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        val api = retrofit.create(KakaoAPI::class.java) // 통신 인터페이스를 객체로 생성
-        val call = api.getSearchKeyword(API_KEY, keyword, page) // 검색 조건 입력
+        val api = retrofit.create(/* service = */ KakaoAPI::class.java) // 통신 인터페이스를 객체로 생성
+        val call = api.getSearchKeyword(API_KEY, searchQuery, page) // 검색 조건 입력
 
         // API 서버에 요청
         call.enqueue(object : Callback<ResultSearchKeyword> {
@@ -219,21 +201,16 @@ class MapFragment : Fragment(), MapView.CurrentLocationEventListener {
                 listItems.add(item)
 
                 // 지도에 마커 추가
-                val point = MapPOIItem().apply {
+                val point = MapPOIItem()
+                point.apply {
                     itemName = document.place_name
                     mapPoint = MapPoint.mapPointWithGeoCoord(
                         document.y.toDouble(),
                         document.x.toDouble()
                     )
                     markerType = MapPOIItem.MarkerType.CustomImage
-                    customImageResourceId = when {
-                        keyword.contains("CU") -> cuMarkerResourceId
-                        keyword.contains("emart24") -> gs25MarkerResourceId
-                        keyword.contains("7-Eleven") -> sevenElevenMarkerResourceId
-                        else -> cuMarkerResourceId
-                    }
+                    customImageResourceId = customMarkerResourceId
                 }
-
                 binding.mapView.addPOIItem(point)
             }
             listAdapter.notifyDataSetChanged()

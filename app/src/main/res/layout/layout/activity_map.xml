@@ -68,44 +68,23 @@
 
             <Button
                 android:id="@+id/buttonCU"
-                style="@style/CustomSquareButton"
-                android:backgroundTint="@color/rightgreen"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:fontFamily="@font/bold"
-                android:layout_marginRight="6dp"
-                android:layout_marginLeft="7dp"
-                android:textSize="13dp"
                 android:text="CU" />
 
             <Button
                 android:id="@+id/buttonGS25"
-                style="@style/CustomSquareButton"
-                android:backgroundTint="@color/rightgreen"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:fontFamily="@font/bold"
-                android:layout_marginRight="6dp"
-                android:layout_marginLeft="6dp"
-                android:textSize="13dp"
                 android:text="emart24" />
 
             <Button
                 android:id="@+id/button7Eleven"
-                style="@style/CustomSquareButton"
-                android:backgroundTint="@color/rightgreen"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:fontFamily="@font/bold"
-                android:layout_marginRight="7dp"
-                android:layout_marginLeft="6dp"
-                android:textSize="13dp"
                 android:text="7-Eleven" />
         </LinearLayout>
 

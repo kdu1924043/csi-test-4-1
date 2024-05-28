@@ -48,8 +48,8 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
                 android:layout_gravity="center"/>
 
             <!-- 댓글 입력 필드 -->
@@ -63,23 +63,18 @@
 
             <Button
                 android:id="@+id/buttonSubmitComment"
-                style="@style/CustomSquareButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="댓글 등록"
-                android:textColor="@color/black"
-                android:backgroundTint="@color/rblack"
-                android:fontFamily="@font/bold"
                 android:layout_gravity="right"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginRight="5dp"/>
 
             <!-- 댓글 목록 표시를 위한 RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewComments"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"/>
         </LinearLayout>
     </ScrollView>
@@ -89,9 +84,7 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:background="@drawable/likeback"
-        android:layout_marginRight="50dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         />
 
     <ImageView

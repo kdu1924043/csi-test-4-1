@@ -1,4 +1,4 @@
-package com.example.csi
+package values.csi
 
 import android.content.Context
 import android.content.Intent
@@ -109,25 +109,6 @@ class MapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener {
             searchKeyword(keyword, pageNumber)
         }
 
-        // CU, GS25, 7-Eleven 버튼 클릭 이벤트 처리
-        binding.buttonCU.setOnClickListener {
-            keyword = "CU"
-            pageNumber = 1
-            searchKeyword(keyword, pageNumber)
-        }
-
-        binding.buttonGS25.setOnClickListener {
-            keyword = "emart24"
-            pageNumber = 1
-            searchKeyword(keyword, pageNumber)
-        }
-
-        binding.button7Eleven.setOnClickListener {
-            keyword = "7-Eleven"
-            pageNumber = 1
-            searchKeyword(keyword, pageNumber)
-        }
-
         // 초기 지도 위치 설정
         val initialLatitude = 37.810694
         val initialLongitude = 127.070980
@@ -190,12 +171,15 @@ class MapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener {
     }
 
     private fun searchKeyword(keyword: String, page: Int) {
+        // 기본적으로는 입력된 키워드를 사용하고, "cu" 키워드를 추가하여 검색 쿼리를 생성
+        val searchQuery = "$keyword cu"
+
         val retrofit = Retrofit.Builder() // Retrofit 구성
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val api = retrofit.create(KakaoAPI::class.java) // 통신 인터페이스를 객체로 생성
-        val call = api.getSearchKeyword(API_KEY, keyword, page) // 검색 조건 입력
+        val call = api.getSearchKeyword(API_KEY, searchQuery, page) // 검색 조건 입력
 
         // API 서버에 요청
         call.enqueue(object : Callback<ResultSearchKeyword> {
@@ -291,7 +275,7 @@ class MapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener {
                 val latitude = location.latitude
                 val longitude = location.longitude
                 // CU 편의점 주변 검색
-                searchKeyword("CU", 1)
+                searchKeyword("양주 경동대 CU", 1)
             }
         }
     }

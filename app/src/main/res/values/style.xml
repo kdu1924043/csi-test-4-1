@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ContentEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:background">@drawable/background_radius</item>
+    </style>
+    <style name="ShapeAppearance.MaterialComponents.Square" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">0dp</item>
+    </style>
+
+    <!-- Custom button style using the ShapeAppearance -->
+    <style name="CustomSquareButton" parent="Widget.MaterialComponents.Button">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.MaterialComponents.Square</item>
+    </style>
+</resources>

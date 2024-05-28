@@ -24,6 +24,9 @@
         android:theme="@style/Theme.CSI"
         tools:targetApi="31">
         <activity
+            android:name=".MyCommentsActivity"
+            android:exported="true" />
+        <activity
             android:name=".ContentDetailActivity"
             android:exported="true" />
         <activity

@@ -36,14 +36,13 @@ class CommentAdapter(
 
         holder.itemView.setOnClickListener {
             val currentUserEmail = FirebaseAuth.getInstance().currentUser?.email
-            if (currentUserEmail == comment.userEmail) { // 댓글을 작성한 사용자인 경우에만 삭제 가능
+            if (currentUserEmail == comment.userEmail || currentUserEmail == contentAuthorEmail) {
                 showDeleteConfirmationDialog(comment.id, position)
             } else {
                 Toast.makeText(context, "댓글을 삭제할 수 있는 권한이 없습니다.", Toast.LENGTH_SHORT).show()
             }
         }
     }
-
 
     override fun getItemCount(): Int {
         return commentsList.size
@@ -62,12 +61,14 @@ class CommentAdapter(
     private fun deleteComment(commentId: String, position: Int) {
         databaseReference.child(contentId).child("comments").child(commentId).removeValue()
             .addOnSuccessListener {
-                commentsList.removeAt(position)
-                notifyItemRemoved(position)
+                commentsList.removeAt(position) // 삭제 전에 목록에서 항목을 제거합니다.
+                notifyItemRemoved(position) // 제거 후에 RecyclerView에 변경 사항을 알립니다.
+
                 Toast.makeText(context, "댓글이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
                 Toast.makeText(context, "댓글 삭제 실패", Toast.LENGTH_SHORT).show()
             }
     }
+
 }

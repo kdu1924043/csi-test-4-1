@@ -1,3 +1,7 @@
+package com.example.csi
+
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -5,11 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.csi.R
 
-data class Item(val no: Int, val name: String, val price: Int, val photo: String)
-
-class ItemAdapter(private val itemList: List<Item>) :
+class ItemAdapter(private val context: Context, private val itemList: List<Item>) :
     RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -31,13 +32,17 @@ class ItemAdapter(private val itemList: List<Item>) :
         holder.nameTextView.text = currentItem.name
         holder.priceTextView.text = currentItem.price.toString()
 
-        // Glide를 사용하여 이미지를 로드하고 표시합니다.
         Glide.with(holder.itemView.context)
             .load(currentItem.photo)
             .into(holder.photoImageView)
+
+        holder.photoImageView.setOnClickListener {
+            val intent = Intent(context, ReviewActivity::class.java).apply {
+                putExtra("item", currentItem)
+            }
+            context.startActivity(intent)
+        }
     }
 
-    override fun getItemCount(): Int {
-        return itemList.size
-    }
+    override fun getItemCount() = itemList.size
 }

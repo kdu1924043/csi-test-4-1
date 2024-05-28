@@ -1,7 +1,5 @@
 package com.example.csi
 
-import Item
-import ItemAdapter
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,7 +7,6 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.csi.R
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
@@ -57,7 +54,7 @@ class SearchActivity21 : AppCompatActivity() {
         }
 
         filteredList = ArrayList(itemList)
-        adapter = ItemAdapter(filteredList)
+        adapter = ItemAdapter(this, filteredList)
         recyclerView.adapter = adapter
 
         searchEditText.addTextChangedListener(object : TextWatcher {

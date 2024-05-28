@@ -1,3 +1,5 @@
+package com.example.csi
+
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -51,7 +53,7 @@ class Fragment3 : Fragment() {
         }
 
         filteredList = ArrayList(itemList)
-        adapter = ItemAdapter(filteredList)
+        adapter = ItemAdapter(requireContext(), filteredList)
         recyclerView.adapter = adapter
 
         searchEditText.addTextChangedListener(object : TextWatcher {

@@ -90,14 +90,20 @@ class SearchActivity : AppCompatActivity() {
 
     private fun filterByPriceRange(minPrice: String, maxPrice: String) {
         filteredList.clear()
+        val min = minPrice.replace(",", "").toIntOrNull() ?: return
+        val max = maxPrice.replace(",", "").toIntOrNull() ?: return
+
         for (item in itemList) {
-            val itemPrice = item.price.toIntOrNull()
-            if (itemPrice != null && itemPrice >= minPrice.toInt() && itemPrice <= maxPrice.toInt()) {
+            val itemPrice = item.price.replace(",", "").toIntOrNull()
+            if (itemPrice != null && itemPrice in min..max) {
                 filteredList.add(item)
             }
         }
         adapter.notifyDataSetChanged()
     }
+
+
+
 
 
 

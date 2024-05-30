@@ -69,6 +69,15 @@
                 android:layout_marginLeft="2dp"
                 android:fontFamily="@font/bold"
                 android:textSize="17dp" />
+
+            <TextView
+                android:id="@+id/priceTextView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:text="원"
+                android:fontFamily="@font/bold"
+                android:textSize="17dp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

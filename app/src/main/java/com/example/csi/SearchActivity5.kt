@@ -50,7 +50,7 @@ class SearchActivity5 : AppCompatActivity() {
             val item = Item(
                 jsonObject.getInt("no"),
                 jsonObject.getString("name"),
-                jsonObject.getInt("price"),
+                jsonObject.getString("price"),
                 jsonObject.getString("photo")
             )
             itemList.add(item)
@@ -71,9 +71,10 @@ class SearchActivity5 : AppCompatActivity() {
         })
 
         // ADD HERE: 각 버튼에 대한 클릭 리스너 설정
-        btnBelow1500.setOnClickListener { filterByPriceRange(0, 1500) }
-        btn1500To3000.setOnClickListener { filterByPriceRange(1500, 4999) }
-        btnAbove5000.setOnClickListener { filterByPriceRange(5000, Int.MAX_VALUE) }
+        btnBelow1500.setOnClickListener { filterByPriceRange("0", "1500") }
+        btn1500To3000.setOnClickListener { filterByPriceRange("1500", "4999") }
+        btnAbove5000.setOnClickListener { filterByPriceRange("5000", "99999999") } // 임의의 큰 값 설정
+
     }
 
     private fun filter(text: String) {
@@ -90,16 +91,17 @@ class SearchActivity5 : AppCompatActivity() {
         adapter.notifyDataSetChanged()
     }
 
-    // ADD HERE: 가격대에 따라 itemList 필터링
-    private fun filterByPriceRange(minPrice: Int, maxPrice: Int) {
+    private fun filterByPriceRange(minPrice: String, maxPrice: String) {
         filteredList.clear()
         for (item in itemList) {
-            if (item.price in minPrice..maxPrice) {
+            val itemPrice = item.price.toIntOrNull()
+            if (itemPrice != null && itemPrice >= minPrice.toInt() && itemPrice <= maxPrice.toInt()) {
                 filteredList.add(item)
             }
         }
         adapter.notifyDataSetChanged()
     }
+
 
     private fun loadJSONFromAsset(fileName: String): String? {
         var json: String? = null

@@ -75,7 +75,7 @@ class HomeFragment : Fragment() {
             val item1 = Item1(
                 jsonObject.getInt("no"),
                 jsonObject.getString("name"),
-                jsonObject.getInt("price"),
+                jsonObject.getString("price"),
                 jsonObject.getString("photo")
             )
             itemList.add(item1)

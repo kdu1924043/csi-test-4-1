@@ -46,7 +46,7 @@ class Fragment3 : Fragment() {
             val item = Item(
                 jsonObject.getInt("no"),
                 jsonObject.getString("name"),
-                jsonObject.getInt("price"),
+                jsonObject.getString("price"),
                 jsonObject.getString("photo")
             )
             itemList.add(item)

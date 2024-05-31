@@ -40,7 +40,7 @@ class SearchActivity6 : AppCompatActivity() {
         btn1500To3000 = findViewById(R.id.btn1500To3000)
         btnAbove5000 = findViewById(R.id.btnAbove5000)
 
-        val json: String = loadJSONFromAsset("S.json") ?: ""
+        val json: String = loadJSONFromAsset("Ssss.json") ?: ""
 
         val jsonArray = JSONArray(json)
 

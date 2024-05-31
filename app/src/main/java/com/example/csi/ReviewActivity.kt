@@ -1,59 +1,98 @@
 package com.example.csi
-
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.View
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.google.firebase.database.*
 
 class ReviewActivity : AppCompatActivity() {
 
+    private lateinit var itemNameTextView: TextView
+    private lateinit var itemPriceTextView: TextView
+    private lateinit var itemImageView: ImageView
     private lateinit var reviewEditText: EditText
     private lateinit var submitButton: Button
-    private lateinit var itemNameTextView: TextView
-    private lateinit var reviewContentTextView: TextView
-
-    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var reviewTextView: TextView
+    private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_review)
 
+        itemNameTextView = findViewById(R.id.itemNameTextView)
+        itemPriceTextView = findViewById(R.id.itemPriceTextView)
+        itemImageView = findViewById(R.id.itemImageView)
         reviewEditText = findViewById(R.id.reviewEditText)
         submitButton = findViewById(R.id.submitButton)
-        itemNameTextView = findViewById(R.id.itemNameTextView)
-        reviewContentTextView = findViewById(R.id.reviewContentTextView)
+        reviewTextView = findViewById(R.id.reviewTextView)
 
-        sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val item = intent.getSerializableExtra("item") as? Item
 
-        val item = intent.getParcelableExtra<Item>("item")
         item?.let {
             itemNameTextView.text = it.name
+            itemPriceTextView.text = it.price
+            Glide.with(this).load(it.photo).into(itemImageView)
         }
 
-        // 이전에 작성된 리뷰를 불러와서 텍스트뷰에 표시
-        val itemId = item?.no ?: -1
-        val savedReview = sharedPreferences.getString("review_$itemId", "")
-        if (savedReview?.isNotEmpty() == true) {
-            reviewContentTextView.text = savedReview
-            reviewContentTextView.visibility = View.VISIBLE
-        }
+        // Firebase Realtime Database의 "reviews" 노드에 대한 참조 가져오기
+        database = FirebaseDatabase.getInstance().reference.child("reviews")
 
         submitButton.setOnClickListener {
             val reviewText = reviewEditText.text.toString()
-            val newReview = "리뷰 내용: $reviewText\n" + savedReview // 이전 리뷰와 새로운 리뷰를 합침
-            saveReview(itemId, newReview)
-            reviewContentTextView.text = newReview
-            reviewContentTextView.visibility = View.VISIBLE
+            if (item != null && reviewText.isNotEmpty()) {
+                val reviewData = mapOf(
+                    "itemName" to item.name,
+                    "reviewText" to reviewText
+                )
+                val reviewId = database.child("reviews").push().key // 리뷰에 대한 고유한 키 생성
+                if (reviewId != null) {
+                    database.child("reviews").child(reviewId).setValue(reviewData)
+                        .addOnSuccessListener {
+                            // 저장 성공 처리
+                        }
+                        .addOnFailureListener { exception ->
+                            // 저장 실패 처리
+                            exception.printStackTrace()
+                        }
+                }
+                reviewEditText.text.clear()
+            }
         }
+
+
+
+        // Firebase Realtime Database에서 리뷰를 읽고 업데이트
+        // Firebase Realtime Database에서 리뷰를 읽고 업데이트
+        database.child("reviews").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Log.d("ReviewActivity", "onDataChange called")
+                val reviews = mutableListOf<String>()
+                for (reviewSnapshot in snapshot.children) {
+                    val itemName = reviewSnapshot.child("itemName").getValue(String::class.java)
+                    val reviewText = reviewSnapshot.child("reviewText").getValue(String::class.java)
+                    if (itemName != null && reviewText != null && itemName == item?.name) { // 현재 보고 있는 상품에 해당하는 리뷰만 추가
+                        val review = "$itemName: $reviewText"
+                        reviews.add(review)
+                    }
+                }
+                updateReviews(reviews)
+            }
+            override fun onCancelled(error: DatabaseError) {
+                // 오류 처리
+            }
+        })
+
+
+
     }
 
-    private fun saveReview(itemId: Int, review: String) {
-        val editor = sharedPreferences.edit()
-        editor.putString("review_$itemId", review)
-        editor.apply()
+    private fun updateReviews(reviews: List<String>) {
+        val reviewsText = reviews.joinToString("\n")
+        reviewTextView.text = reviewsText
     }
+
 }

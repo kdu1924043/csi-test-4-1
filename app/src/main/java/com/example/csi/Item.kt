@@ -1,13 +1,14 @@
 package com.example.csi
 import android.os.Parcel
 import android.os.Parcelable
+import java.io.Serializable
 
 data class Item(
     val no: Int,
     val name: String,
     val price: String,
     val photo: String
-) : Parcelable {
+) : Serializable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString()!!,
@@ -15,16 +16,6 @@ data class Item(
         parcel.readString()!!
     )
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(no)
-        parcel.writeString(name)
-        parcel.writeString(price)
-        parcel.writeString(photo)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
 
     companion object CREATOR : Parcelable.Creator<Item> {
         override fun createFromParcel(parcel: Parcel): Item {

@@ -9,30 +9,50 @@
         android:id="@+id/itemNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Item Name"
         android:textSize="18sp"
-        android:padding="8dp"/>
+        android:padding="8dp" />
+
+    <TextView
+        android:id="@+id/itemPriceTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:padding="8dp" />
+
+    <ImageView
+        android:id="@+id/itemImageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:padding="8dp"
+        android:layout_gravity="center" />
 
     <EditText
         android:id="@+id/reviewEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="리뷰를 작성하세요"
-        android:inputType="textMultiLine"
-        android:minLines="5" />
-
-    <TextView
-        android:id="@+id/reviewContentTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="리뷰 내용:"
-        android:textSize="16sp"
-        android:paddingTop="16dp"
-        android:visibility="gone" />
+        android:hint="Write your review here" />
 
     <Button
         android:id="@+id/submitButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="제출" />
+        android:text="Submit Review"
+        android:layout_marginTop="16dp" />
+
+    <!-- ScrollView를 사용하여 스크롤 가능하게 함 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!-- TextView를 스크롤 가능하게 함 -->
+        <TextView
+            android:id="@+id/reviewTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+    </ScrollView>
+
 </LinearLayout>

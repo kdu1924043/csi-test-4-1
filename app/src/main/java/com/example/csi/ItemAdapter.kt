@@ -36,7 +36,7 @@ class ItemAdapter(private val context: Context, private val itemList: List<Item>
             .load(currentItem.photo)
             .into(holder.photoImageView)
 
-        holder.photoImageView.setOnClickListener {
+        holder.itemView.setOnClickListener {
             val intent = Intent(context, ReviewActivity::class.java).apply {
                 putExtra("item", currentItem)
             }

@@ -1,6 +1,5 @@
 package com.example.csi
 
-
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,7 +7,8 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.csi.R
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
@@ -27,6 +27,9 @@ class SearchActivity10 : AppCompatActivity() {
     private lateinit var btn1500To3000: Button
     private lateinit var btnAbove5000: Button
 
+    // Firebase Storage
+    private lateinit var storageReference: StorageReference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -39,23 +42,11 @@ class SearchActivity10 : AppCompatActivity() {
         btn1500To3000 = findViewById(R.id.btn1500To3000)
         btnAbove5000 = findViewById(R.id.btnAbove5000)
 
-        val json: String = loadJSONFromAsset("burgur.json") ?: ""
-
-        val jsonArray = JSONArray(json)
+        // Initialize Firebase Storage
+        storageReference = FirebaseStorage.getInstance().reference.child("burgur.json")
 
         itemList = mutableListOf()
-        for (i in 0 until jsonArray.length()) {
-            val jsonObject: JSONObject = jsonArray.getJSONObject(i)
-            val item = Item(
-                jsonObject.getInt("no"),
-                jsonObject.getString("name"),
-                jsonObject.getString("price"),
-                jsonObject.getString("photo")
-            )
-            itemList.add(item)
-        }
-
-        filteredList = ArrayList(itemList)
+        filteredList = mutableListOf()
         adapter = ItemAdapter(this, filteredList)
         recyclerView.adapter = adapter
 
@@ -73,6 +64,37 @@ class SearchActivity10 : AppCompatActivity() {
         btn1500To3000.setOnClickListener { filterByPriceRange("1500", "4999") }
         btnAbove5000.setOnClickListener { filterByPriceRange("5000", "99999999") } // 임의의 큰 값 설정
 
+        // Load data from Firebase Storage
+        loadJSONFromFirebaseStorage()
+    }
+
+    private fun loadJSONFromFirebaseStorage() {
+        val localFile = createTempFile("burgur", "json")
+        storageReference.getFile(localFile).addOnSuccessListener {
+            val json = localFile.readText()
+            parseJSON(json)
+        }.addOnFailureListener { exception ->
+            // Handle any errors
+            exception.printStackTrace()
+        }
+    }
+
+    private fun parseJSON(json: String) {
+        val jsonArray = JSONArray(json)
+
+        for (i in 0 until jsonArray.length()) {
+            val jsonObject: JSONObject = jsonArray.getJSONObject(i)
+            val item = Item(
+                jsonObject.getInt("no"),
+                jsonObject.getString("name"),
+                jsonObject.getString("price"),
+                jsonObject.getString("photo")
+            )
+            itemList.add(item)
+        }
+
+        filteredList.addAll(itemList)
+        adapter.notifyDataSetChanged()
     }
 
     private fun filter(text: String) {
@@ -101,21 +123,5 @@ class SearchActivity10 : AppCompatActivity() {
             }
         }
         adapter.notifyDataSetChanged()
-    }
-
-
-    private fun loadJSONFromAsset(fileName: String): String? {
-        var json: String? = null
-        try {
-            val inputStream = assets.open(fileName)
-            val size = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            inputStream.close()
-            json = String(buffer, Charset.forName("UTF-8"))
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        return json
     }
 }

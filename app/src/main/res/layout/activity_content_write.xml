@@ -112,6 +112,7 @@
         android:layout_marginRight="10dp"
         android:backgroundTint="@color/rightgreen"
         android:fontFamily="@font/bold"
+        style="@style/CustomSquareButton"
         android:text="업로드"
         android:textColor="@color/black"
         android:textSize="20dp"

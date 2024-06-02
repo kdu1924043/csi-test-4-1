@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/loginback1"
+    android:background="@drawable/loginback4"
     android:orientation="vertical"
     tools:context=".LoginActivity">
     <LinearLayout
@@ -88,6 +88,7 @@
                     android:layout_marginBottom="30dp"
                     android:backgroundTint="@color/rightgreen"
                     android:fontFamily="@font/bold"
+                    style="@style/CustomSquareButton"
                     android:text="  로그인  "
                     android:textColor="@color/black"
                     android:textSize="20dp" />

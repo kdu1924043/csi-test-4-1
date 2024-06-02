@@ -11,14 +11,22 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:padding="8dp" />
-
-    <TextView
-        android:id="@+id/itemPriceTextView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:padding="8dp" />
-
+        android:orientation="horizontal">
+    <TextView
+        android:id="@+id/itemPriceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/itemPriceTextView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="원"
+            android:textSize="16sp" />
+    </LinearLayout>
     <ImageView
         android:id="@+id/itemImageView"
         android:layout_width="200dp"
@@ -48,6 +56,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/reback1"
         android:layout_weight="1">
 
         <!-- TextView를 스크롤 가능하게 함 -->

@@ -17,12 +17,12 @@ class TradeFragment : Fragment(R.layout.fragment7) {
 // ImageView 클릭 리스너 설정
         imageView.setOnClickListener {
             // Intent 생성 및 BuyActivity로 이동
-            val intent = Intent(context, BuyActivity::class.java)
+            val intent = Intent(context, TotalPaymentActivity::class.java)
             startActivity(intent)
         }
         imageView2.setOnClickListener {
             // Intent 생성 및 BuyActivity로 이동
-            val intent = Intent(context, Buy2Activity::class.java)
+            val intent = Intent(context, TotalPaymentActivity2::class.java)
             startActivity(intent)
         }
     }

@@ -2,6 +2,7 @@ package com.example.csi
 
 import android.Manifest
 import android.content.ContentValues
+import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -13,6 +14,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -35,7 +37,6 @@ import kr.co.bootpay.android.models.Payload
 import java.io.IOException
 import java.util.*
 
-
 class TotalPaymentActivity : AppCompatActivity() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var storageReference: StorageReference
@@ -56,7 +57,7 @@ class TotalPaymentActivity : AppCompatActivity() {
         val extra = BootExtra()
             .setCardQuota("0,2,3") // 일시불, 2개월, 3개월 할부 허용, 할부는 최대 12개월까지 사용됨 (5만원 이상 구매시 할부허용 범위)
         val items: MutableList<BootItem> = ArrayList()
-        val item1 = BootItem().setName("마우's 스").setId("ITEM_CODE_MOUSE").setQty(1).setPrice(500.0)
+        val item1 = BootItem().setName("마우스").setId("ITEM_CODE_MOUSE").setQty(1).setPrice(500.0)
         val item2 = BootItem().setName("키보드").setId("ITEM_KEYBOARD_MOUSE").setQty(1).setPrice(500.0)
         items.add(item1)
         items.add(item2)
@@ -109,7 +110,7 @@ class TotalPaymentActivity : AppCompatActivity() {
 
                         // 이미지를 표시할 ImageView 찾기
                         val imageViewGifticon: ImageView = findViewById(R.id.imageView_gifticon)
-                        // 바코드를 표시할 TextView 찾기
+                        // 바코드를 표시할 ImageView 찾기
                         val imageViewBarcode: ImageView = findViewById(R.id.imageView_barcode)
                         val textViewNumber: TextView = findViewById(R.id.textView_number)
 
@@ -131,12 +132,15 @@ class TotalPaymentActivity : AppCompatActivity() {
 
                         // 바코드를 이미지로 생성하여 표시
                         val barcodeBitmap = generateBarcode(randomBarcode)
-                        imageViewBarcode.setImageBitmap(barcodeBitmap)
+                        barcodeBitmap?.let {
+                            imageViewBarcode.setImageBitmap(it)
+                            textViewNumber.text = "Number: $randomNumber"
 
-                        textViewNumber.text = "Number: $randomNumber"
-
-                        // 결제가 완료되면 이미지 저장
-                        saveImageToGallery(imageViewGifticon, "gifticon_", ".jpg")
+                            // 결제가 완료되면 바코드 이미지 저장 알림
+                            showSaveConfirmationDialog(it)
+                        } ?: run {
+                            Toast.makeText(this@TotalPaymentActivity, "바코드 생성에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                        }
                     }.addOnFailureListener { e ->
                         Log.e("TotalPaymentActivity", "Error getting gifticon image URL: ${e.message}")
                     }
@@ -157,7 +161,6 @@ class TotalPaymentActivity : AppCompatActivity() {
         return currentUser?.email
     }
 
-    // 바코드를 이미지로 생성하는 함수
     // 바코드를 이미지로 생성하는 함수
     private fun generateBarcode(barcodeData: String): Bitmap? {
         try {
@@ -185,9 +188,22 @@ class TotalPaymentActivity : AppCompatActivity() {
         return null
     }
 
+    // 바코드 이미지 저장 확인 알림을 표시하는 함수
+    private fun showSaveConfirmationDialog(bitmap: Bitmap) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("바코드 저장")
+            .setMessage("바코드를 저장하시겠습니까?")
+            .setPositiveButton("확인") { dialog, which ->
+                saveImageToGallery(bitmap, "barcode_", ".jpg")
+            }
+            .setNegativeButton("취소") { dialog, which ->
+                Toast.makeText(this, "바코드 저장이 취소되었습니다.", Toast.LENGTH_SHORT).show()
+            }
+            .show()
+    }
 
     // 이미지를 갤러리에 저장
-    private fun saveImageToGallery(view: ImageView, prefix: String, suffix: String) {
+    private fun saveImageToGallery(bitmap: Bitmap, prefix: String, suffix: String) {
         // 저장소 권한 체크
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
             ContextCompat.checkSelfPermission(
@@ -202,8 +218,6 @@ class TotalPaymentActivity : AppCompatActivity() {
             )
             return
         }
-        // 이미지뷰의 이미지를 비트맵으로 변환
-        val bitmap = view.drawable.toBitmap()
         // 내부 저장소에 이미지 저장
         saveImage(bitmap, prefix, suffix)
     }
@@ -227,10 +241,10 @@ class TotalPaymentActivity : AppCompatActivity() {
             contentResolver.openOutputStream(uri!!)?.use { outputStream ->
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
             }
-            Toast.makeText(this, "이미지가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "바코드가 저장되었습니다.", Toast.LENGTH_SHORT).show()
         } catch (e: IOException) {
             Log.e("TotalPaymentActivity", "Error saving image: ${e.message}")
-            Toast.makeText(this, "이미지 저장에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "바코드 저장에 실패했습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -243,12 +257,11 @@ class TotalPaymentActivity : AppCompatActivity() {
         if (requestCode == REQUEST_PERMISSION_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // 저장소 권한이 허용된 경우 이미지 저장 처리 진행
-                // 이미지를 가져오는 방법에 따라 처리할 내용 추가
                 // 예를 들어, 이미지뷰의 이미지를 가져오는 경우:
-                val imageViewGifticon: ImageView = findViewById(R.id.imageView_gifticon)
-                val drawable = imageViewGifticon.drawable
+                val imageViewBarcode: ImageView = findViewById(R.id.imageView_barcode)
+                val drawable = imageViewBarcode.drawable
                 val bitmap = drawable.toBitmap()
-                saveImage(bitmap, "gifticon_", ".jpg")
+                saveImage(bitmap, "barcode_", ".jpg")
             } else {
                 Toast.makeText(this, "저장소 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
             }

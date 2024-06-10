@@ -2,10 +2,14 @@ package com.example.csi
 
 import android.Manifest
 import android.content.ContentValues
+import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -21,6 +25,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.zxing.BarcodeFormat
@@ -40,6 +45,7 @@ import java.util.*
 class TotalPaymentActivity : AppCompatActivity() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var storageReference: StorageReference
+    private val firestore = FirebaseFirestore.getInstance()
     private var applicationId = "663a3fae19b42d44e97685ba"
     private val REQUEST_PERMISSION_CODE = 1001
 
@@ -55,7 +61,7 @@ class TotalPaymentActivity : AppCompatActivity() {
 
     fun PaymentTest(v: View?) {
         val extra = BootExtra()
-            .setCardQuota("0,2,3") // 일시불, 2개월, 3개월 할부 허용, 할부는 최대 12개월까지 사용됨 (5만원 이상 구매시 할부허용 범위)
+            .setCardQuota("0,2,3") // 일시불, 2개월, 3개월 할부 허용
         val items: MutableList<BootItem> = ArrayList()
         val item1 = BootItem().setName("마우스").setId("ITEM_CODE_MOUSE").setQty(1).setPrice(500.0)
         val item2 = BootItem().setName("키보드").setId("ITEM_KEYBOARD_MOUSE").setQty(1).setPrice(500.0)
@@ -105,42 +111,42 @@ class TotalPaymentActivity : AppCompatActivity() {
                     // 결제가 완료되면 Firebase Storage에서 이미지 URL 가져오기
                     storageReference.downloadUrl.addOnSuccessListener { uri ->
                         val imageUrl = uri.toString()
-                        // 이미지 URL을 클라이언트로 전송하는 로직 추가
                         Log.d("TotalPaymentActivity", "Gifticon image URL: $imageUrl")
 
                         // 이미지를 표시할 ImageView 찾기
                         val imageViewGifticon: ImageView = findViewById(R.id.imageView_gifticon)
-                        // 바코드를 표시할 ImageView 찾기
                         val imageViewBarcode: ImageView = findViewById(R.id.imageView_barcode)
                         val textViewNumber: TextView = findViewById(R.id.textView_number)
 
                         // 이미지를 표시할 ImageView에 이미지 설정
                         Glide.with(this@TotalPaymentActivity)
+                            .asBitmap()
                             .load(imageUrl)
-                            .into(imageViewGifticon)
+                            .into(object : com.bumptech.glide.request.target.SimpleTarget<Bitmap>() {
+                                override fun onResourceReady(resource: Bitmap, transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?) {
+                                    // 기프티콘 이미지 로드 완료
+                                    imageViewGifticon.setImageBitmap(resource)
 
-                        // 이미지를 보이도록 visibility 변경
-                        imageViewGifticon.visibility = View.VISIBLE
+                                    // 바코드와 숫자 표시
+                                    val randomBarcode = "123456789"
+                                    val randomNumber = "987654321"
 
-                        // 바코드와 숫자 표시
-                        imageViewBarcode.visibility = View.VISIBLE
-                        textViewNumber.visibility = View.VISIBLE
+                                    // 바코드를 이미지로 생성하여 표시
+                                    val barcodeBitmap = generateBarcode(randomBarcode)
+                                    barcodeBitmap?.let {
+                                        imageViewBarcode.setImageBitmap(it)
+                                        textViewNumber.text = "Number: $randomNumber"
 
-                        // 여기서 바코드와 숫자를 설정하세요 (예: 랜덤한 숫자 생성)
-                        val randomBarcode = "123456789"
-                        val randomNumber = "987654321"
+                                        // 기프티콘, 바코드, 넘버 이미지를 하나로 결합
+                                        val combinedBitmap = combineImages(resource, it, randomNumber)
 
-                        // 바코드를 이미지로 생성하여 표시
-                        val barcodeBitmap = generateBarcode(randomBarcode)
-                        barcodeBitmap?.let {
-                            imageViewBarcode.setImageBitmap(it)
-                            textViewNumber.text = "Number: $randomNumber"
-
-                            // 결제가 완료되면 바코드 이미지 저장 알림
-                            showSaveConfirmationDialog(it)
-                        } ?: run {
-                            Toast.makeText(this@TotalPaymentActivity, "바코드 생성에 실패했습니다.", Toast.LENGTH_SHORT).show()
-                        }
+                                        // 결제가 완료되면 바코드 이미지 저장 알림
+                                        showSaveConfirmationDialog(combinedBitmap, randomBarcode)
+                                    } ?: run {
+                                        Toast.makeText(this@TotalPaymentActivity, "바코드 생성에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            })
                     }.addOnFailureListener { e ->
                         Log.e("TotalPaymentActivity", "Error getting gifticon image URL: ${e.message}")
                     }
@@ -188,13 +194,47 @@ class TotalPaymentActivity : AppCompatActivity() {
         return null
     }
 
+    // 기프티콘 이미지, 바코드 이미지, 숫자를 하나의 이미지로 합치는 함수
+    private fun combineImages(gifticon: Bitmap, barcode: Bitmap, number: String): Bitmap {
+        val width = maxOf(gifticon.width, barcode.width)
+        val height = gifticon.height + barcode.height + 50 // 숫자를 위한 추가 공간
+
+        val combinedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(combinedBitmap)
+        canvas.drawColor(Color.WHITE) // 배경색 설정
+
+        // 기프티콘 이미지 그리기
+        canvas.drawBitmap(gifticon, 0f, 0f, null)
+
+        // 바코드 이미지 그리기
+        canvas.drawBitmap(barcode, 0f, gifticon.height.toFloat(), null)
+
+        // 숫자 그리기
+        val paint = Paint()
+        paint.color = Color.BLACK
+        paint.textSize = 40f
+        paint.textAlign = Paint.Align.CENTER
+
+        val xPos = (canvas.width / 2).toFloat()
+        val yPos = (gifticon.height + barcode.height + 40).toFloat()
+        canvas.drawText(number, xPos, yPos, paint)
+
+        return combinedBitmap
+    }
+
     // 바코드 이미지 저장 확인 알림을 표시하는 함수
-    private fun showSaveConfirmationDialog(bitmap: Bitmap) {
+    private fun showSaveConfirmationDialog(bitmap: Bitmap, barcode: String) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("바코드 저장")
             .setMessage("바코드를 저장하시겠습니까?")
             .setPositiveButton("확인") { dialog, which ->
-                saveImageToGallery(bitmap, "barcode_", ".jpg")
+                val savedUri = saveImageToGallery(bitmap, "barcode_", ".jpg")
+                savedUri?.let {
+                    saveBarcodeToFirestore(barcode, it)
+                    Toast.makeText(this, "바코드가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+                } ?: run {
+                    Toast.makeText(this, "바코드 저장에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                }
             }
             .setNegativeButton("취소") { dialog, which ->
                 Toast.makeText(this, "바코드 저장이 취소되었습니다.", Toast.LENGTH_SHORT).show()
@@ -202,32 +242,30 @@ class TotalPaymentActivity : AppCompatActivity() {
             .show()
     }
 
-    // 이미지를 갤러리에 저장
-    private fun saveImageToGallery(bitmap: Bitmap, prefix: String, suffix: String) {
-        // 저장소 권한 체크
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-            ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                REQUEST_PERMISSION_CODE
+    // 바코드와 사용자 정보를 Firestore에 저장
+    private fun saveBarcodeToFirestore(barcode: String, uri: Uri) {
+        val user = auth.currentUser
+        user?.let {
+            val userEmail = it.email
+            val barcodeData = hashMapOf(
+                "barcode" to barcode,
+                "uri" to uri.toString(),
+                "user" to userEmail
             )
-            return
+            firestore.collection("barcodes").document(userEmail!!)
+                .set(barcodeData)
+                .addOnSuccessListener {
+                    Log.d("TotalPaymentActivity", "Barcode data saved to Firestore")
+                }
+                .addOnFailureListener { e ->
+                    Log.e("TotalPaymentActivity", "Error saving barcode data to Firestore: ${e.message}")
+                }
         }
-        // 내부 저장소에 이미지 저장
-        saveImage(bitmap, prefix, suffix)
     }
 
-    // 비트맵을 내부 저장소에 저장
-    private fun saveImage(bitmap: Bitmap, prefix: String, suffix: String) {
-        // 이미지를 저장하기 위한 파일명 생성
+    // 비트맵을 갤러리에 저장
+    private fun saveImageToGallery(bitmap: Bitmap, prefix: String, suffix: String): Uri? {
         val fileName = prefix + System.currentTimeMillis() + suffix
-
-        // 저장할 이미지 파일의 URI 생성
         val contentResolver = contentResolver
         val imageUri = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
         val imageDetails = ContentValues().apply {
@@ -235,17 +273,15 @@ class TotalPaymentActivity : AppCompatActivity() {
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
         }
         val uri = contentResolver.insert(imageUri, imageDetails)
-
-        // 이미지 파일을 저장
         try {
             contentResolver.openOutputStream(uri!!)?.use { outputStream ->
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
             }
-            Toast.makeText(this, "바코드가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+            return uri
         } catch (e: IOException) {
             Log.e("TotalPaymentActivity", "Error saving image: ${e.message}")
-            Toast.makeText(this, "바코드 저장에 실패했습니다.", Toast.LENGTH_SHORT).show()
         }
+        return null
     }
 
     override fun onRequestPermissionsResult(
@@ -257,11 +293,16 @@ class TotalPaymentActivity : AppCompatActivity() {
         if (requestCode == REQUEST_PERMISSION_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // 저장소 권한이 허용된 경우 이미지 저장 처리 진행
-                // 예를 들어, 이미지뷰의 이미지를 가져오는 경우:
                 val imageViewBarcode: ImageView = findViewById(R.id.imageView_barcode)
                 val drawable = imageViewBarcode.drawable
                 val bitmap = drawable.toBitmap()
-                saveImage(bitmap, "barcode_", ".jpg")
+                val savedUri = saveImageToGallery(bitmap, "barcode_", ".jpg")
+                savedUri?.let {
+                    saveBarcodeToFirestore("sample_barcode", it)
+                    Toast.makeText(this, "바코드가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+                } ?: run {
+                    Toast.makeText(this, "바코드 저장에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 Toast.makeText(this, "저장소 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
             }

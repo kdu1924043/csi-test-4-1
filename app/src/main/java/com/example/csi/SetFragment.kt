@@ -55,5 +55,9 @@ class SetFragment : Fragment(R.layout.fragment6) {
             val intent = Intent(requireContext(), ListActivity::class.java)
             startActivity(intent)
         }
+        view.findViewById<Button>(R.id.move_to_mygi_button).setOnClickListener {
+            val intent = Intent(requireContext(), MygiActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

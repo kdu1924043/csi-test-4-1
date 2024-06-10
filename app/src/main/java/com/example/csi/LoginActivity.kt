@@ -1,11 +1,11 @@
 package com.example.csi
-
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.csi.MainActivity
 import com.example.csi.R
@@ -43,9 +43,14 @@ class LoginActivity : AppCompatActivity() {
 
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
-                    if (!task.isSuccessful) {
-                        // 로그인에 실패한 경우
+                    if (task.isSuccessful) {
+                        // 로그인 성공
+                        updateUI(auth.currentUser)
+                    } else {
+                        // 로그인 실패
                         Log.w(TAG, "signInWithEmail:failure", task.exception)
+                        // 에러 메시지를 토스트로 출력
+                        Toast.makeText(this, "아이디나 비밀번호가 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
         }
@@ -56,6 +61,7 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
     override fun onStart() {
         super.onStart()
         // AuthStateListener를 등록하여 사용자의 인증 상태를 감시
@@ -67,6 +73,7 @@ class LoginActivity : AppCompatActivity() {
         // 액티비티가 중지될 때 AuthStateListener를 제거하여 메모리 누수를 방지
         auth.removeAuthStateListener(authStateListener)
     }
+
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
             // 로그인이 성공했을 때 MainActivity로 이동
